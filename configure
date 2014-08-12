@@ -1,0 +1,7 @@
+#! /bin/sh
+
+sh perlscrict.sh chorebox-in.pl
+sh perldumpy.sh chorebox-in.seg.pl chorebox-in.pl
+
+perl -c chorebox-in.pl
+
