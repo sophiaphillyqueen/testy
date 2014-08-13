@@ -33,3 +33,27 @@
 # becomes
 # $ chorebox-in ../../foo/bar/configure --some=thing
 
+
+# First thing we do is examine the configure script
+# so as to (as best we can) figure out what interpreter
+# to use to invoke it. Some might think that it would be
+# much simpler to simply execute the file as being itself
+# the executable and let the system take it from there -
+# but that would cause a problem if the source tree is
+# located some place where it is impossible to set
+# "execute" permissions to "on" (such as non-app-specific
+# filesystem area on Android).
+{
+  my $lc_rdcm; # The command to retrieve file's contents:
+  my $lc_fullfile;
+  my $lc_firstline;
+  
+  $lc_rdcm = "cat";
+  &apnd_shrunk_argument($lc_rdcm,$ARGV[0]);
+  $lc_fullfile = `$lc_rdcm`;
+  ($lc_firstline) = split(/\n/,$lc_fullfile);
+  @lc_allwords = split(/ /,$lc_firstline);
+}
+
+
+
