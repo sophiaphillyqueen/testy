@@ -1,0 +1,29 @@
+
+# First, I initialize the $origidir variable to the source-code
+# directory.
+origidir="$(dirname "${0}")"
+origidir="$(cd "${origidir}" && pwd)"
+
+
+# Now I assemble the file: temporary--chorebox-in.pl --- a *temporary* copy
+# of the wrapper script.
+sh "${origidir}/perlstrict.sh" temporary--chorebox-in.pl
+sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-in.seg.pl" \
+temporary--chorebox-in.pl
+
+sh "${origidir}/perldumpy.sh" "${origidir}/directory_subset.fn.pl" \
+temporary--chorebox-in.pl
+
+#sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" \
+#temporary--chorebox-in.pl
+
+#sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
+#temporary--chorebox-in.pl
+
+
+
+perl -c temporary--chorebox-in.pl || exit 4
+exec perl temporary--chorebox-in.pl "${origidir}/configure" "$@"
+
+
+

@@ -34,26 +34,64 @@
 # $ chorebox-in ../../foo/bar/configure --some=thing
 
 
-# First thing we do is examine the configure script
-# so as to (as best we can) figure out what interpreter
-# to use to invoke it. Some might think that it would be
-# much simpler to simply execute the file as being itself
-# the executable and let the system take it from there -
-# but that would cause a problem if the source tree is
-# located some place where it is impossible to set
-# "execute" permissions to "on" (such as non-app-specific
-# filesystem area on Android).
+# Some variables we require ...
+my $where_we_work_from;
+my $home_directory;
+my $home_bin_dir;
+
+# First, we establish our working location.
+$where_we_work_from = `pwd`; chomp($where_we_work_from);
+
+
+# Now we find the home directory --- as why else use this wrapper?
+$home_directory = $ENV{"HOME"};
+
+if ( $home_directory eq "" )
 {
-  my $lc_rdcm; # The command to retrieve file's contents:
-  my $lc_fullfile;
-  my $lc_firstline;
-  
-  $lc_rdcm = "cat";
-  &apnd_shrunk_argument($lc_rdcm,$ARGV[0]);
-  $lc_fullfile = `$lc_rdcm`;
-  ($lc_firstline) = split(/\n/,$lc_fullfile);
-  @lc_allwords = split(/ /,$lc_firstline);
+  die "\nThe \"chorebox-in\" wrapper is pointless if your environment does"
+    . "\nnot specify a home directory."
+    . "\n\n"
+  ;
 }
+
+# Now we find the first directory on the execution PATH that is
+# a subset of the home directory (as that is the test that we are
+# currently using to verify the user's privilege to put files
+# there).
+{
+  my $lc_path;
+  my @lc_pthdirs;
+  my $lc_pathloc;
+  my $lc_found;
+  
+  $lc_path = $ENV{"PATH"};
+  @lc_pthdirs = split(/:/,$lc_path);
+  $lc_found = ( 1 > 2 );
+  foreach $lc_pathloc (@lc_pthdirs)
+  {
+    if ( !($lc_found) )
+    {
+      $lc_found = &directory_subset($home_directory,$lc_pathloc);
+      if ( $lc_found ) { $home_bin_dir = $lc_pathloc; }
+    }
+  }
+  
+  if ( !($lc_found) )
+  {
+    die "\nNo directory within the tree of your home directory"
+      . "\nis mentioned on the execution PATH.\n\n";
+    ;
+  }
+}
+
+# Now for the following, paying attention to the GNU
+# documentation on directory variables and their corresponding
+# options might be helpful in my coding -- even if this is
+# not 100% GNU-compliant:
+# http://www.gnu.org/prep/standards/html_node/Configuration.html
+# http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
+
+
 
 
 
