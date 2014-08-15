@@ -38,9 +38,17 @@
 my $where_we_work_from;
 my $home_directory;
 my $home_bin_dir;
+my $found_home_bin_dir;
+my @legacy_options; # Options this script will just pass on
+
 
 # First, we establish our working location.
 $where_we_work_from = `pwd`; chomp($where_we_work_from);
+
+
+# And we take care of our legacy options:
+@legacy_options = @ARGV;
+if ( goodarray(@legacy_options) ) { shift(@legacy_options); }
 
 
 # Now we find the home directory --- as why else use this wrapper?
@@ -62,27 +70,40 @@ if ( $home_directory eq "" )
   my $lc_path;
   my @lc_pthdirs;
   my $lc_pathloc;
-  my $lc_found;
   
   $lc_path = $ENV{"PATH"};
   @lc_pthdirs = split(/:/,$lc_path);
-  $lc_found = ( 1 > 2 );
+  $found_home_bin_dir = ( 1 > 2 );
   foreach $lc_pathloc (@lc_pthdirs)
   {
-    if ( !($lc_found) )
+    if ( !($found_home_bin_dir) )
     {
-      $lc_found = &directory_subset($home_directory,$lc_pathloc);
-      if ( $lc_found ) { $home_bin_dir = $lc_pathloc; }
+      $found_home_bin_dir = &directory_subset($home_directory,$lc_pathloc);
+      if ( $found_home_bin_dir ) { $home_bin_dir = $lc_pathloc; }
     }
   }
-  
-  if ( !($lc_found) )
+}
+
+
+# Of course, if nothing in the tree of the HOME directory is found
+# then the only way we *currently* have to know where to install
+# stuff is for the configural command-line to specify it. Therefore,
+# this tool will (in such an even) *insist* that this be specified
+# on the command line. (This will be replaced by a refusal to run
+# altogether if the home-directory-tree test for a directory's
+# writability is replaced with a more reliable test.)
+if ( !($found_home_bin_dir) )
+{
+  if ( !(&specified_var_option("bindir")) )
   {
-    die "\nNo directory within the tree of your home directory"
-      . "\nis mentioned on the execution PATH.\n\n";
+    die "\nSince none of the directories listed in PATH are within the"
+      . "\ntree headed by the home-directory, it is therefore deemed"
+      . "\nthat specifying the --dirname=<xxx>  option is mandatory."
+      . "\n\n"
     ;
   }
 }
+
 
 # Now for the following, paying attention to the GNU
 # documentation on directory variables and their corresponding

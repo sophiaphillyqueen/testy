@@ -11,14 +11,17 @@ sh "${origidir}/perlstrict.sh" temporary--chorebox-in.pl
 sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-in.seg.pl" \
 temporary--chorebox-in.pl
 
+sh "${origidir}/perldumpy.sh" "${origidir}/specified_var_option.fn.pl" \
+temporary--chorebox-in.pl
+
 sh "${origidir}/perldumpy.sh" "${origidir}/directory_subset.fn.pl" \
 temporary--chorebox-in.pl
 
 #sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" \
 #temporary--chorebox-in.pl
 
-#sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
-#temporary--chorebox-in.pl
+sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
+temporary--chorebox-in.pl
 
 
 
