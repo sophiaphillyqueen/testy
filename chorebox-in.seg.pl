@@ -40,6 +40,8 @@ my $home_directory;
 my $home_bin_dir;
 my $found_home_bin_dir;
 my @legacy_options; # Options this script will just pass on
+my @myown_options; # Options that we will add ...
+my $the_config_scrip;
 
 
 # First, we establish our working location.
@@ -48,7 +50,8 @@ $where_we_work_from = `pwd`; chomp($where_we_work_from);
 
 # And we take care of our legacy options:
 @legacy_options = @ARGV;
-if ( goodarray(@legacy_options) ) { shift(@legacy_options); }
+if ( goodarray(@legacy_options) ) { $the_config_scrip = shift(@legacy_options); }
+@myown_options = ();
 
 
 # Now we find the home directory --- as why else use this wrapper?
@@ -111,7 +114,11 @@ if ( !($found_home_bin_dir) )
 # not 100% GNU-compliant:
 # http://www.gnu.org/prep/standards/html_node/Configuration.html
 # http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
+&if_not_specified("bindir",$home_bin_dir);
+&if_not_specified("prefix",$home_directory . "/chorebox_sys");
 
+# Now we do the execing (for now insisting on "sh" - that may change)
+exec("sh",$the_config_scrip,@legacy_options,@myown_options);
 
 
 
