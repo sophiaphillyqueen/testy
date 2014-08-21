@@ -1,2 +1,16 @@
 
+# First, I initialize the $origidir variable to the source-code
+# directory.
+origidir="$(dirname "${0}")"
+origidir="$(cd "${origidir}" && pwd)"
+
+# Now I assemble the file: temporary--chorebox-configure.pl --- a
+# *temporary* copy of the configuration script.
+sh "${origidir}/perlstrict.sh" temporary--chorebox-configure.pl
+sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure.seg.pl" \
+temporary--chorebox-configure.pl
+
+
+
+exec perl temporary--chorebox-configure.pl --srcdir="${origidir}" "${@}"
 
