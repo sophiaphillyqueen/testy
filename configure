@@ -13,6 +13,12 @@ temporary--chorebox-configure.pl
 sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" \
 temporary--chorebox-configure.pl
 
+sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" \
+temporary--chorebox-configure.pl
+
+sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
+temporary--chorebox-configure.pl
+
 
 
 exec perl temporary--chorebox-configure.pl --srcdir="${origidir}" "${@}"

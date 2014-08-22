@@ -20,6 +20,11 @@
 sub autom {
   my $lc_each;
   
+  # This directory-variable will henceforth be on the list of
+  # those resolved by &autom - no matter how this function
+  # ends.
+  @lisdirs = (@lisdirs,$_[0]);
+  
   # See if an over-ride to the default was specified ---
   # and honor it if so.
   foreach $lc_each (@dir_vars_specfied)

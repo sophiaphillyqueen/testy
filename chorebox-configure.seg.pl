@@ -20,8 +20,10 @@ my @dir_vars_specfied = ();
 my %dir_vars_values = {};
 my %dir_vars_real = {};
 my %valvar = {}; # Value after resolved by &autom
-
+my @lisdirs = (); # List of all directories resolved by &autom
 my $argum;
+
+my @make_lines;
 
 foreach $argum (@ARGV)
 {
@@ -79,10 +81,36 @@ sub try_process_argum {
   sleep(2);
 }
 
+&autom("srcdir",".");
 &autom("prefix","/usr/local");
 &autom("exec_prefix",$valvar{"prefix"});
 &autom("bindir",$valvar{"exec_prefix"} . "/bin");
 &autom("sbindir",$valvar{"exec_prefix"} . "/sbin");
 &autom("libexecdir",$valvar{"exec_prefix"} . "/libexec");
+
+open DST, "| cat > Makefile";
+{
+  my $lc_vrot;
+  foreach $lc_vrot (@lisdirs)
+  {
+    print DST "\n" . $lc_vrot . " = " . $valvar{$lc_vrot};
+  }
+}
+
+# Now comes the part where we will load the Makefile recipe
+# to active memory:
+{
+  my $lc_cmd;
+  my $lc_cont;
+  
+  $lc_cmd = "cat";
+  &apnd_shrunk_argument($lc_cmd, $valvar{"srcdir"} . "/Makefile.pre");
+  $lc_cont = `$lc_cmd`;
+  @make_lines = split(/\n/,$lc_cont);
+}
+
+print DST "\n";
+close DST;
+
 
 
