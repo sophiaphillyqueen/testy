@@ -10,6 +10,9 @@ sh "${origidir}/perlstrict.sh" temporary--chorebox-configure.pl
 sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure.seg.pl" \
 temporary--chorebox-configure.pl
 
+sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" \
+temporary--chorebox-configure.pl
+
 
 
 exec perl temporary--chorebox-configure.pl --srcdir="${origidir}" "${@}"
