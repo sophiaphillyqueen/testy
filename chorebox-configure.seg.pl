@@ -24,6 +24,7 @@ my @lisdirs = (); # List of all directories resolved by &autom
 my $argum;
 
 my @make_lines;
+my $make_length;
 
 foreach $argum (@ARGV)
 {
@@ -107,6 +108,7 @@ open DST, "| cat > Makefile";
   &apnd_shrunk_argument($lc_cmd, $valvar{"srcdir"} . "/Makefile.pre");
   $lc_cont = `$lc_cmd`;
   @make_lines = split(/\n/,$lc_cont);
+  $make_length = @make_lines;
 }
 
 print DST "\n";
