@@ -116,6 +116,7 @@ if ( !($found_home_bin_dir) )
 # http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
 &if_not_specified("bindir",$home_bin_dir);
 &if_not_specified("prefix",$home_directory . "/chorebox_sys");
+&if_not_specified("oldincludedir","");
 
 # Now we do the execing (for now insisting on "sh" - that may change)
 exec("sh",$the_config_scrip,@legacy_options,@myown_options);

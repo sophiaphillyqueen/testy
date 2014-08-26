@@ -25,6 +25,8 @@ my $argum;
 
 my @make_lines;
 my $make_length;
+my $make_indx;
+my %make_label;
 my %proj_info_s;
 my %proj_info_l;
 
@@ -122,9 +124,13 @@ sub try_process_argum {
 &autom("runstatedir",$valvar{"localstatedir"} . "/run");
 &autom("includedir",$valvar{"prefix"} . "/include");
 
-# NOTE: Until further notice -chorebox- programs should not actually
-# *use* the "oldincludedir" variable. It is only defined here so
-# that the program won't bomb of that value is passed to it.
+# NOTE: Until further notice -chorebox- programs should only
+# *use* the "oldincludedir" variable with GREAT TREPIDATION.
+# The -chorebox-in- wrapper sets it to a value of empty
+# string - which according to the GNU standards means that
+# nothing should be stored here. However, unless you are
+# sure of what you are doing, don't install anything here
+# *regardless*.
 &autom("oldincludedir","/usr/include");
 
 # <-- docdir
@@ -151,8 +157,13 @@ sub try_process_argum {
 }
 #&autom("libexecdir",$valvar{"exec_prefix"} . "/libexec");
 
-# DEFINE LATER:
-#   docdir
+
+
+# Now the following directory-variables are *not* present in the
+# GNU standards - but nonetheless -chorebox- finds them to be
+# important.
+&autom("farm_bindir",$valvar{"bindir"});
+&autom("farm_sbindir",$valvar{"sbindir"});
 
 
 open DST, "| cat > Makefile";
@@ -176,6 +187,22 @@ open DST, "| cat > Makefile";
   @make_lines = split(/\n/,$lc_cont);
   $make_length = @make_lines;
 }
+
+# And we look for the list of place-labels:
+$make_indx = 0;
+%make_label = {};
+while ( $make_indx < ( $make_length - 0.2 ) )
+{
+  my @lc_a;
+  @lc_a = split(/:/,$make_lines[$make_indx]);
+  if ( $lc_a[1] eq "label" )
+  {
+    system("echo","Label marked: " . $lc_a[2] . ": " . $make_indx . ":");
+    $make_label{$lc_a[2]} = $make_indx;
+  }
+  $make_indx = int($make_indx + 1.2);
+}
+
 
 print DST "\n";
 close DST;
