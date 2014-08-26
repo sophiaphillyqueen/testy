@@ -88,6 +88,45 @@ sub try_process_argum {
 &autom("bindir",$valvar{"exec_prefix"} . "/bin");
 &autom("sbindir",$valvar{"exec_prefix"} . "/sbin");
 &autom("libexecdir",$valvar{"exec_prefix"} . "/libexec");
+&autom("datarootdir",$valvar{"prefix"} . "/share");
+&autom("datadir",$valvar{"datadir"});
+&autom("sysconfdir",$valvar{"prefix"} . "/etc");
+&autom("sharedstatedir",$valvar{"prefix"} . "/com");
+&autom("localstatedir",$valvar{"prefix"} . "/var");
+&autom("runstatedir",$valvar{"localstatedir"} . "/run");
+&autom("includedir",$valvar{"prefix"} . "/include");
+
+# NOTE: Until further notice -chorebox- programs should not actually
+# *use* the "oldincludedir" variable. It is only defined here so
+# that the program won't bomb of that value is passed to it.
+&autom("oldincludedir","/usr/include");
+
+# <-- docdir
+&autom("infodir",$valvar{"datarootdir"} . "/info");
+&autom("htmldir",$valvar{"docdir"});
+&autom("dvidir",$valvar{"docdir"});
+&autom("pdfdir",$valvar{"docdir"});
+&autom("psdir",$valvar{"docdir"});
+&autom("libdir",$valvar{"exec_prefix"} . "/lib");
+&autom("lispdir",$valvar{"datarootdir"} . "/emacs/site-lisp");
+&autom("localedir",$valvar{"datarootdir"} . "/locale");
+&autom("mandir",$valvar{"datarootdir"} . "/man");
+&autom("manext",".1");
+{
+  my $lc_a;
+  $lc_a = 1;
+  while ( $lc_a < 8.5 )
+  {
+    &autom("man" . $lc_a . "dir",$valvar{"mandir"} . "/man" . $lc_a);
+    &autom("man" . $lc_a . "ext","." . $lc_a);
+    $lc_a = int($lc_a + 1.2);
+  }
+}
+#&autom("libexecdir",$valvar{"exec_prefix"} . "/libexec");
+
+# DEFINE LATER:
+#   docdir
+
 
 open DST, "| cat > Makefile";
 {
