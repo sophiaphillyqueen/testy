@@ -27,10 +27,10 @@ abs_origidir="$(cd "${origidir}" && pwd)"
 # scripts in the primary -chorebox- package -- but should be
 # un-necessary in any subsequent -chorebox- packages.
 local_cc="${CC_LOCAL}"
-if [ "${local_cc}" == "" ]; then
+if [ "${ local_cc }" == "" ]; then
   local_cc="${CC}"
 fi
-if [ "${local_cc}" == "" ]; then
+if [ "${ local_cc }" == "" ]; then
   local_cc=gcc
 fi
 for zambusa in "${@}"
