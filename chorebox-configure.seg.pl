@@ -25,6 +25,8 @@ my $argum;
 
 my @make_lines;
 my $make_length;
+my %proj_info_s;
+my %proj_info_l;
 
 foreach $argum (@ARGV)
 {
@@ -83,6 +85,30 @@ sub try_process_argum {
 }
 
 &autom("srcdir",".");
+# Okay --- we processed the "srcdir" variable -- but before
+# we process any more, we must refer to the proj-info file.
+{
+  my $lc_cmd;
+  my $lc_cont;
+  my @lc_lins;
+  my $lc_line;
+  my $lc_xlin;
+  my @lc_segs;
+  $lc_cmd = "cat";
+  &apnd_shrunk_argument($lc_cmd,$valvar{"srcdir"} . "/proj-info.txt");
+  $lc_cont = `$lc_cmd`;
+  @lc_lins = split(/\n/,$lc_cont);
+  foreach $lc_line (@lc_lins)
+  {
+    $lc_xlin = "x" . $lc_line;
+    @lc_segs = split(/:/,$lc_xlin);
+    $proj_info_s{$lc_segs[1]} = $lc_segs[2];
+    @lc_segs = split(/:/,$lc_xlin,3);
+    $proj_info_l{$lc_segs[1]} = $lc_segs[2];
+  }
+}
+
+
 &autom("prefix","/usr/local");
 &autom("exec_prefix",$valvar{"prefix"});
 &autom("bindir",$valvar{"exec_prefix"} . "/bin");
@@ -102,6 +128,7 @@ sub try_process_argum {
 &autom("oldincludedir","/usr/include");
 
 # <-- docdir
+&autom("docdir",$valvar{"datarootdir"} . "/doc/" . $proj_info_s{"name"} . "-" . $proj_info_s{"vrsn"});
 &autom("infodir",$valvar{"datarootdir"} . "/info");
 &autom("htmldir",$valvar{"docdir"});
 &autom("dvidir",$valvar{"docdir"});
