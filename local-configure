@@ -20,6 +20,8 @@
 # directory.
 origidir="$(dirname "${0}")"
 abs_origidir="$(cd "${origidir}" && pwd)"
+# .. and I identify the for-local C compiler ...
+local_cc="$(sh "${origidir}/ident-local-cc.sh" "${@}")"
 
 
 # Now I assemble the file: temporary--chorebox-in.pl --- a *temporary* copy
