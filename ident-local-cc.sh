@@ -31,6 +31,15 @@
 # information that it's calling script has access to to
 # make the necessary determination.
 
+# IMPORTANT: If you are doing cross-compilation, you
+# should know that the C compiler identified by this
+# script is NOT the one that you will be doing
+# cross-compilation with. The C compiler identified
+# by this script is used to build binaries that are
+# executed ON THIS LOCAL MACHINE and will be used
+# to generate binaries that are to be used in this
+# package's configuration process.
+
 echo gcc
 
 
