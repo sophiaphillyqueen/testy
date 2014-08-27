@@ -22,27 +22,6 @@ origidir="$(dirname "${0}")"
 abs_origidir="$(cd "${origidir}" && pwd)"
 
 
-# BEGIN PART TO IDENTIFY LOCAL-TARGET C COMPILER:
-# This part must be cut-and-paste for original twin-configure
-# scripts in the primary -chorebox- package -- but should be
-# un-necessary in any subsequent -chorebox- packages.
-local_cc="${CC_LOCAL}"
-if [ $local_cc = "" ]; then
-  local_cc="${CC}"
-fi
-if [ $local_cc = "" ]; then
-  local_cc=gcc
-fi
-for zambusa in "${@}"
-do
-  zambusb="$(echo "${zambusa}" | cut -b 1-3)"
-  if [ $zambusb = "CC=" ]; then
-    local_cc="$(echo "${zambusa}" | cut -b 4-10000)"
-  fi
-done
-# END PART TO IDENTIFY LOCAL-TARGET C COMPILER:
-
-
 # Now I assemble the file: temporary--chorebox-configure.pl --- a
 # *temporary* copy of the configuration script.
 sh "${origidir}/perlstrict.sh" temporary--chorebox-configure.pl
