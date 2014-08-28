@@ -38,6 +38,15 @@ size_t chompify ( char **rg_a, size_t rg_b );
 //   This function will not return, but will terminate the program,
 // should there be a memory-allocation error.
 
+char *chorebox_apend_string ( char **rg_a, char *rg_b );
+// This function appends (by copy )the contents of the string <rg_b>
+// onto the end of the string <rg_a>.
+//   The program fails with error in the event of a memory allocation
+// failure - or if <rg_a> is null. Otherwise, what can go wrong?
+//   The return value is the new value of <*rg_a>.
+//   And the only way this will be NULL is if both <rg_b> and the
+// going-in value of <*rg_a> are NULL.
+
 void chorebox_command_line ( int rg_a, char **rg_b, char **rg_c );
 // This function should be called very early on in the game from
 // the main() function so that the libchorebox library (as well as

@@ -25,6 +25,8 @@ bool found_home_bin_dir = false;
 chorebox_str_list *legacy_options = NULL;
 chorebox_str_list *myown_options = NULL;
 char *the_config_scrip = NULL;
+char *prefix_directory = NULL;
+chorebox_str_list *final_comand = NULL;
 
 int main ( int argc, char **argv, char **env )
 {
@@ -83,6 +85,39 @@ int main ( int argc, char **argv, char **env )
   // that meets the eligibility of being a directory you can
   // install stuff in.)
   found_home_bin_dir = autodetect_home_bin_dir(&home_bin_dir);
+  
+  
+  // Of course, if nothing in the tree of the HOME directory is found
+  // then the only way we *currently* have to know where to install
+  // stuff is for the configural command-line to specify it. Therefore,
+  // this tool will (in such an even) *insist* that this be specified
+  // on the command line. (This will be replaced by a refusal to run
+  // altogether if the home-directory-tree test for a directory's
+  // writability is replaced with a more reliable test.)
+  if ( !(found_home_bin_dir) )
+  {
+    if ( !(specified_var_option("bindir")) )
+    {
+      fprintf(stderr,"\n%s: FATAL ERROR:\n",argv[0]);
+      fprintf(stderr,"Since none of the directories listed in PATH are within the\n");
+      fprintf(stderr,"tree headed by the home-directory, it is therefore deemed\n");
+      fprintf(stderr,"that specifying the --dirname=<xxx>  option is mandatory.\n\n");
+      fflush(stderr);
+      exit(4);
+    }
+    
+  }
+  
+  if_not_specified("bindir",home_bin_dir);
+  chorebox_apend_string(&prefix_directory,home_directory);
+  chorebox_apend_string(&prefix_directory,"/chorebox_sys");
+  if_not_specified("prefix",prefix_directory);
+  if_not_specified("oldincludedir","");
+  
+  
+  chorebox_str_lis_apnd(&final_comand,"sh");
+  chorebox_str_lis_dump(&legacy_options,&final_comand);
+  chorebox_str_lis_dump(&myown_options,&final_comand);
   
   return 10;
 }

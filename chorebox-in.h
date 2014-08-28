@@ -35,8 +35,20 @@ bool autodetect_home_bin_dir ( char **rg_a );
 //   If it fails due to memory allocation error, it does not
 // return at all, but terminates the program with error.
 
+bool if_not_specified ( char *rg_a, char *rg_b );
+// If the dir-variable named <rg_a> is specified among the legacy
+// options, do nothing and return -false-. Otherwise, add that
+// variable with the value of <rg_b> to the newly-added options
+// and return -true-.
+//   Once again - the program ends with failure if there is a
+// memory allocation failure.
+
 void show_usage_error ( char *rg_a );
 // Shows an error-message related to this program's usage -- and
 // then terminates the program with failure.
+
+bool specified_var_option ( char *rg_a );
+// Returns -true- if the directory-variable named by <rg_a> is
+// given value among the legacy options.
 
 #endif
