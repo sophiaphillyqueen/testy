@@ -22,6 +22,19 @@
 #include <chorebox.h>
 #include <stdio.h>
 
+bool autodetect_home_bin_dir ( char **rg_a );
+// This function searches PATH to find the first directory it
+// can find that meets the requirement of being of the user's
+// where this user can install stuff.
+//   Currently, the only test it knows for this purpose is if
+// the directory is within the hierarchy of the home directory.
+//   If it finds no such directory, then this function returns
+// -false- and does nothing else.
+//   If it finds such a directory, it copies it's name to
+// <rg_a> and returns -true-.
+//   If it fails due to memory allocation error, it does not
+// return at all, but terminates the program with error.
+
 void show_usage_error ( char *rg_a );
 // Shows an error-message related to this program's usage -- and
 // then terminates the program with failure.

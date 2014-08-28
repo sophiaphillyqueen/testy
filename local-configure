@@ -27,7 +27,8 @@ sh "${origidir}/set-extra-cc-flags.sh" "${@}"
 
 
 # Let us try to compile the C-based version here:
-sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in chorebox-in.c || exit
+sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
+"${origidir}/chorebox-in.c" || exit
 
 
 
