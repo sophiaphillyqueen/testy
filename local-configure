@@ -24,6 +24,13 @@ abs_origidir="$(cd "${origidir}" && pwd)"
 local_cc="$(sh "${origidir}/ident-local-cc.sh" "${@}")"
 
 
+
+# Let us try to compile the C-based version here:
+sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in chorebox-in.c || exit
+
+
+
+
 # Now I assemble the file: temporary--chorebox-in.pl --- a *temporary* copy
 # of the wrapper script.
 sh "${origidir}/perlstrict.sh" temporary--chorebox-in.pl
