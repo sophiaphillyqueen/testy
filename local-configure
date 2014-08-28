@@ -20,8 +20,9 @@
 # directory.
 origidir="$(dirname "${0}")"
 abs_origidir="$(cd "${origidir}" && pwd)"
-# .. and I identify the for-local C compiler ...
-local_cc="$(sh "${origidir}/ident-local-cc.sh" "${@}")"
+# .. and I identify the for-local C compiler and error flags
+sh "${origidir}/ident-local-cc.sh" "${@}" > temporary--c-compiler.txt
+sh "${origidir}/set-extra-cc-flags.sh" "${@}"
 
 
 

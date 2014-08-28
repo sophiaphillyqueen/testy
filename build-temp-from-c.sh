@@ -20,15 +20,15 @@
 # directory.
 origidir="$(dirname "${0}")"
 abs_origidir="$(cd "${origidir}" && pwd)"
-# .. and I identify the for-local C compiler ...
-local_cc="$(sh "${origidir}/ident-local-cc.sh" "${@}")"
+# .. and I load the for-local C compiler.
+local_cc="$(cat temporary--c-compiler.txt)"
 
 first_round=yes
 say_yes=yes
 say_no=no
 obje_num=0
 obje_litny=""
-extra_arg_c=""
+extra_arg_c=`cat temporary--extra-options-compile.txt`
 extra_arg_l=""
 
 rm -rf tmp-obj

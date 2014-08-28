@@ -40,7 +40,7 @@ int main ( int argc, char **argv, char **env )
   // ------------------------------ //
   // Now we deal with the command line -- including gleaning
   // the legacy options.
-  if ( argc < 1 )
+  if ( argc < 2 )
   {
     show_usage_error("Failure to specify the \"configure\" script.");
   }
@@ -52,10 +52,10 @@ int main ( int argc, char **argv, char **env )
   // Now, if the script is still running,  the remaining arguments
   // are all options that will in turn be passed to the -configure-
   // script.
-  the_config_scrip = argv[0];
+  the_config_scrip = argv[1];
   {
     int lc2_a;
-    lc2_a = 1;
+    lc2_a = 2;
     while ( lc2_a < argc )
     {
       chorebox_str_lis_apnd(&legacy_options,argv[lc2_a]);
@@ -65,6 +65,24 @@ int main ( int argc, char **argv, char **env )
   // ------------------------------- //
   // FINISH COMMAND-LINE PROCESSING: //
   // ------------------------------- //
+  
+  // Now we find the HOME directory. Why else use this wrapper?
+  if ( home_directory != NULL ) { free(home_directory); }
+  home_directory = getenv("HOME");
+  if ( home_directory == NULL )
+  {
+    fprintf(stderr,"\n%s: FATAL ERROR: Could not identify home directory.\n",argv[0]);
+    fprintf(stderr,"This is a wrapper program for \"configure\" scripts. It is\n");
+    fprintf(stderr,"pointless if no home directory can be identified.\n\n");
+    fflush(stderr);
+    exit(3);
+  }
+  
+  // And now let us see if we can auto-detect the home-binary
+  // directory. (That is, the first directory specified in PATH
+  // that meets the eligibility of being a directory you can
+  // install stuff in.)
+  found_home_bin_dir = autodetect_home_bin_dir(&home_bin_dir);
   
   return 10;
 }
