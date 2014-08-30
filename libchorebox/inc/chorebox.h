@@ -28,7 +28,7 @@ typedef struct chorebox_str_list {
   struct chorebox_str_list *nex;
 } chorebox_str_list;
 
-size_t chompify ( char **rg_a, size_t rg_b );
+//size_t chompify ( char **rg_a, size_t rg_b );
 // This function acts like PERL's &chomp function on the <rg_a>
 // string. Only instead of acting like &chomp is called just
 // once, it acts like &chomp was called whatever number of times
@@ -58,6 +58,29 @@ void chorebox_command_line ( int rg_a, char **rg_b, char **rg_c );
 // The return value is "void" because, if used properly, there should
 // be nothing at all for this function to report back.
 
+void chorebox_exec_b ( chorebox_str_list *rg_a );
+// As with all the chorebox_exec_*() functions, this one does an
+// exec based on a string-list - in this case in argument <rg_a>.
+// If the first item on the list is free of any forward-slash
+// characters, it will attempt to resolve the location of the
+// command along the PATH environment variable.
+
+void chorebox_getcwd ( char **rg_a );
+// This function stores in the dyn-alloc string <rg_a> the full
+// location of the Present Working Directory. The only things
+// that could cause this function to fail are weird things such
+// as memory-allocation failures upon which this function would
+// rather terminate the program with error than return in disgrace.
+//   The return-value is the char-pointer-type reference to the
+// exiting-value of <rg_a> - and is provided just in case that is
+// found as a more convenient way of using this function in some
+// contexts.
+// SEE FOR IMPLEMENTATION:
+//   http://www.lehman.cuny.edu/cgi-bin/man-cgi?getcwd+3
+// as well as:
+//   http://www.gnu.org/software/libc/manual/html_node/Pathconf.html
+//   http://www.delorie.com/djgpp/doc/libc/libc_612.html
+
 bool chorebox_str_lis_apnd ( chorebox_str_list **rg_a, char *rg_b );
 // Apends a -copy- of the string specified in <rg_b> onto the end
 // of the string-list specified in <rg_a>. If it fails because
@@ -68,7 +91,16 @@ bool chorebox_str_lis_apnd ( chorebox_str_list **rg_a, char *rg_b );
 // *not* a cause for failure.) If the function succeeds, it will
 // return -true-.
 
-bool pipe_grab(char *rg_a, char **rg_b);
+void chorebox_str_lis_dump ( chorebox_str_list **rg_a, chorebox_str_list **rg_b );
+// Transfers everything in list <rg_a> onto the *end* of the list
+// <rg_b>. The result will be that the new <rg_b> list will in
+// effect be the old <rg_b> list followed by the old <rg_a> list
+// while the new <rg_a> list will be empty.
+//   Nothing to report back since I can't see anything going wrong
+// if this is used properly --- and if used improperly, I can't
+// see any problem that I'd be able to error-handle.
+
+//bool pipe_grab(char *rg_a, char **rg_b);
 // This function executes the shell command specified by the <rg_a>
 // argument, and pipe-captures it's output, saving it to the string
 // specified by <rg_b>. It returns -true- if successful and -false-

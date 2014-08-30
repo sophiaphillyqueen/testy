@@ -34,8 +34,9 @@ int main ( int argc, char **argv, char **env )
   chorebox_command_line(argc,argv,env);
   
   // First, we establish our working location.
-  pipe_grab("pwd",&where_we_work_from);
-  chompify(&where_we_work_from,1);
+  //pipe_grab("pwd",&where_we_work_from);
+  //chompify(&where_we_work_from,1);
+  chorebox_getcwd(&where_we_work_from);
   
   // ------------------------------ //
   // BEGIN COMMAND-LINE PROCESSING: //
@@ -118,6 +119,9 @@ int main ( int argc, char **argv, char **env )
   chorebox_str_lis_apnd(&final_comand,"sh");
   chorebox_str_lis_dump(&legacy_options,&final_comand);
   chorebox_str_lis_dump(&myown_options,&final_comand);
+  
+  // And now we finally call this most-heraled configure script.
+  chorebox_exec_b(final_comand);
   
   return 10;
 }

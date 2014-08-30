@@ -29,9 +29,30 @@ for an_opt in "${@}"; do
 done
 
 
-# And now we do the same check for the --devel_warn
-cur_prize="--devel_warn"
-leng_var_p1=12
+# And now we do the same check for the --devel_e
+cur_prize="--devel_e"
+leng_var_p1=9
+
+# Copy-paste the following block for every option we search.
+leng_var_p2="$(expr "${leng_var_p1}" + 1)"
+leng_var_p3="$(expr "${leng_var_p2}" + 1)"
+leng_var_x1="$(expr "${leng_var_p3}" + 10)"
+cur_priz_e="${cur_prize}="
+for an_opt in "${@}"; do
+  if [ $an_opt = $cur_prize ]; then
+    cur_status=irp
+  else
+    an_equa="$(echo "${an_opt}" | cut -b 1-"${leng_var_p2}")"
+    if [ $an_equa = $cur_priz_e ]; then
+      cur_status="$(echo "${an_opt}" | cut -b "${leng_var_p3}"-"${leng_var_x1}")"
+    fi
+  fi
+done
+
+
+# And now we do the same check for the --devel_e_c
+cur_prize="--devel_e_c"
+leng_var_p1=11
 
 # Copy-paste the following block for every option we search.
 leng_var_p2="$(expr "${leng_var_p1}" + 1)"
