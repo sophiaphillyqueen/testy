@@ -81,6 +81,37 @@ void chorebox_getcwd ( char **rg_a );
 //   http://www.gnu.org/software/libc/manual/html_node/Pathconf.html
 //   http://www.delorie.com/djgpp/doc/libc/libc_612.html
 
+char *chorebox_join_string ( char *rg_a, char *rg_b );
+// This function takes two strings and returns their concatenated
+// value. The return value will be NULL if and *only* if *both*
+// of the *arguments* are NULL.
+//   In the event of a memory-allocation failure, this function
+// will not return, but will terminate the program with error.
+
+void *chorebox_mlc (size_t size);
+// This function behaves just like malloc() with one exception.
+// If it fails, instead of returning NULL, it terminates the
+// whole program with error -- using the <libchorebox> info
+// regarding the command-line to format the error.
+//   This function does *not* implement memory-allocation on
+// it's own -- but rather, it does it's job as a *wrapper*
+// function for malloc() - so that the memory block that it
+// returns is of the same kind that malloc() would returned,
+// and (if and when the time comes) can be released in the
+// same manner (with free()).
+//   This function is to be used in situations where there is
+// not much point in the program continuing if the memory
+// allocation fails and returning to the calling function at
+// all in such an event would only put on the calling function
+// the burden of having to check for success-or-failure of
+// the memory-allocation.
+//   Granted - there are some times when the value of the
+// programming continuing is well-worth the burden of checking
+// whether or not the memory-allocation operation succeeded -
+// but the possibility of calling malloc() *directly* in those
+// situations is not hindered by the fact that there is now
+// this wrapper-function for *other* situations.
+
 bool chorebox_str_lis_apnd ( chorebox_str_list **rg_a, char *rg_b );
 // Apends a -copy- of the string specified in <rg_b> onto the end
 // of the string-list specified in <rg_a>. If it fails because
