@@ -16,14 +16,15 @@
 #
 # ########################
 
-# Of course, the current version of this program simply
-# ASSumes that "gcc" is used as the local compiler for
-# binaries that will run on this machine, but the idea
-# is that it will later be changed to no longer make this
-# ASSumption. Granted, this script will only be needed
-# for installation of the *base* -chorebox- package.
-# For later versions, the -chorebox- configuration utility
-# will do this calculation if need-be.
+# It is user's responsibility to configure their account
+# to identify the correct C compiler if it is anything
+# other than the default - a simple "gcc".
+# To do that, create the file (and if necessary it's
+# containing directory):
+#   ~/.chorebox/local-c-compiler.txt
+# with only one line - that line being whatever you want
+# to be instead of "gcc" at the beginning of every line
+# of shell-code that does C compilation and/or linking.
 
 # This program is intended for the calling shell-script
 # to call with *all* of it's command-line arguments - the
@@ -40,6 +41,15 @@
 # to generate binaries that are to be used in this
 # package's configuration process.
 
-echo gcc
+blessed_c_compiler=gcc
+
+if [ -d ~/.chorebox ]; then
+  if [ -f ~/.chorebox/local-c-compiler.txt ]; then
+    blessed_c_compiler="$(cat ~/.chorebox/local-c-compiler.txt)";
+  fi
+fi
+
+echo "${blessed_c_compiler}"
+
 
 
