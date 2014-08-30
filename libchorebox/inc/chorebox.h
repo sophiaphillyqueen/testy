@@ -28,6 +28,11 @@ typedef struct chorebox_str_list {
   struct chorebox_str_list *nex;
 } chorebox_str_list;
 
+// Here is where -libchorebox- stores the command-line
+extern int chorebox_argc;
+extern char **chorebox_argv;
+extern char **chorebox_env;
+
 //size_t chompify ( char **rg_a, size_t rg_b );
 // This function acts like PERL's &chomp function on the <rg_a>
 // string. Only instead of acting like &chomp is called just
