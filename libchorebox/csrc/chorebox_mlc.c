@@ -1,5 +1,5 @@
 // libchorebox - A high-level C programming library for -chorebox-
-// vars.c - Global variables of the library
+// chorebox_mlc.c - Source-code for this function:
 // Copyright (C) 2014  Sophia Elizabeth Shapira
 //
 // This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,19 @@
 // ########################
 
 #include <chorebox.h>
+#include <stdio.h>
 
 
-int chorebox_argc;
-char **chorebox_argv;
-char **chorebox_env;
+void *chorebox_mlc (size_t size)
+{
+  void *lc_ret;
+  
+  lc_ret = malloc(size);
+  if ( lc_ret != NULL ) { return lc_ret; }
+  
+  fprintf(stderr,"\n%s: FATAL ERROR:\n  Memory Allocation Failure:\n\n",chorebox_argv[0]);
+  fflush(stderr);
+  exit(2);
+}
 
 

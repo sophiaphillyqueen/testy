@@ -1,4 +1,5 @@
 // chorebox-in - The 'chorebox' wrapper for -configure- scripts.
+// own_this_dir.c - Source-code for this function:
 // Copyright (C) 2014  Sophia Elizabeth Shapira
 //
 // This program is free software: you can redistribute it and/or modify

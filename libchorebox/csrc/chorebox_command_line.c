@@ -1,4 +1,5 @@
-// chorebox - A high-level C programming library
+// libchorebox - A high-level C programming library for -chorebox-
+// chorebox_command_line.c - Source-code for this function:
 // Copyright (C) 2014  Sophia Elizabeth Shapira
 //
 // This program is free software: you can redistribute it and/or modify
