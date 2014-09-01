@@ -32,7 +32,7 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/chorebox_join_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_command_line.c" \
   "${origidir}/libchorebox/csrc/vars.c" \
-"${origidir}/chorebox-in.c" || exit
+"${origidir}/chorebox-in/main.c" || exit
 
 
 
