@@ -34,8 +34,6 @@ int main ( int argc, char **argv, char **env )
   chorebox_command_line(argc,argv,env);
   
   // First, we establish our working location.
-  //pipe_grab("pwd",&where_we_work_from);
-  //chompify(&where_we_work_from,1);
   chorebox_getcwd(&where_we_work_from);
   
   // ------------------------------ //

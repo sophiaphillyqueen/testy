@@ -26,6 +26,13 @@ bool autodetect_home_bin_dir ( char **rg_a )
   char *lc_tryout;
   char *lc_winner;
   
+  // Let us do some local-variable initializations
+  lc_path_string = NULL;
+  lc_path_list = NULL;
+  lc_path_point = NULL;
+  lc_tryout = NULL;
+  lc_winner = NULL;
+  
   // First it gets the list of path directories:
   lc_path_string = getenv("PATH");
   lc_path_list = chorebox_colsep_to_list(lc_path_string);
@@ -33,7 +40,6 @@ bool autodetect_home_bin_dir ( char **rg_a )
   
   // Now beginneth the loop where we check one item at
   // a time for what we seek:
-  lc_winner = NULL;
   lc_path_point = lc_path_list;
   while ( lc_winner == NULL )
   {
