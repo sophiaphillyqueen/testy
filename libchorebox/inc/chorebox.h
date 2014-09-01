@@ -52,6 +52,12 @@ char *chorebox_apend_string ( char **rg_a, char *rg_b );
 //   And the only way this will be NULL is if both <rg_b> and the
 // going-in value of <*rg_a> are NULL.
 
+chorebox_str_list *chorebox_colsep_to_list ( char *rg_a );
+// The argument is a list (generally one of directories) stored as
+// a C string formatted in the manner of the PATH environment variable.
+// This function generates a <chorebox_str_list> linked-list rendition
+// of that same list, and returns a pointer to that linked-list.
+
 void chorebox_command_line ( int rg_a, char **rg_b, char **rg_c );
 // This function should be called very early on in the game from
 // the main() function so that the libchorebox library (as well as
@@ -69,6 +75,10 @@ void chorebox_exec_b ( chorebox_str_list *rg_a );
 // If the first item on the list is free of any forward-slash
 // characters, it will attempt to resolve the location of the
 // command along the PATH environment variable.
+
+void chorebox_free_str_list ( chorebox_str_list *rg_a );
+// This function frees an entire <chorebox_str_list> linked-list
+// of strings -- freeing up the memory for some other use.
 
 void chorebox_getcwd ( char **rg_a );
 // This function stores in the dyn-alloc string <rg_a> the full
