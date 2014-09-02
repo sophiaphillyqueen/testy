@@ -25,6 +25,10 @@ sh "${origidir}/ident-local-cc.sh" "${@}" > temporary--c-compiler.txt
 sh "${origidir}/set-extra-cc-flags.sh" "${@}"
 
 
+say_yes=yes
+say_no=no
+try_backup_on=yes
+native_conf_here=yes
 
 # Let us try to compile the C-based version here:
 sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
@@ -38,8 +42,19 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/chorebox_colsep_to_list.c" \
   "${origidir}/libchorebox/csrc/chorebox_str_lis_dump.c" \
   "${origidir}/libchorebox/csrc/chorebox_free_str_list.c" \
-"${origidir}/chorebox-in/main.c" || exit
+  "${origidir}/libchorebox/csrc/chorebox_str_lis_apnd.c" \
+"${origidir}/chorebox-in/main.c" || try_backup_on=no
 
+
+if [ $try_backup_on = $say_no ]; then
+  native_conf_here=no
+fi
+if [ -f "robust.flag" ]; then
+  try_backup_on=yes
+fi
+if [ $try_backup_on = $say_no ]; then
+  exit 3
+fi
 
 
 
@@ -65,9 +80,11 @@ sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
 temporary--chorebox-in.pl
 
 
-
-perl -c temporary--chorebox-in.pl || exit 4
-exec perl temporary--chorebox-in.pl "${origidir}/configure" "$@"
-
+if [ $native_conf_here = $say_yes ]; then
+  exec ./temporary--chorebox-in "${origidir}/configure" "$@"
+else
+  perl -c temporary--chorebox-in.pl || exit 4
+  exec perl temporary--chorebox-in.pl "${origidir}/configure" "$@"
+fi
 
 
