@@ -36,6 +36,8 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/vars.c" \
   "${origidir}/libchorebox/csrc/chorebox_mlc.c" \
   "${origidir}/libchorebox/csrc/chorebox_colsep_to_list.c" \
+  "${origidir}/libchorebox/csrc/chorebox_str_lis_dump.c" \
+  "${origidir}/libchorebox/csrc/chorebox_free_str_list.c" \
 "${origidir}/chorebox-in/main.c" || exit
 
 
