@@ -24,6 +24,31 @@ abs_origidir="$(cd "${origidir}" && pwd)"
 sh "${origidir}/ident-local-cc.sh" "${@}" > temporary--c-compiler.txt
 sh "${origidir}/set-extra-cc-flags.sh" "${@}"
 
+
+say_yes=yes
+say_no=no
+try_backup_on=yes
+native_conf_here=yes
+
+# Let us try to compile the C-based version here:
+sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-configure \
+"${origidir}/chorebox-configure/main.c" || try_backup_on=no
+
+
+if [ $try_backup_on = $say_no ]; then
+  native_conf_here=no
+fi
+if [ -f "robust.flag" ]; then
+  try_backup_on=yes
+fi
+if [ -f "robust-configure.flag" ]; then
+  try_backup_on=yes
+fi
+if [ $try_backup_on = $say_no ]; then
+  exit 3
+fi
+
+
 # Now I assemble the file: temporary--chorebox-configure.pl --- a
 # *temporary* copy of the configuration script.
 sh "${origidir}/perlstrict.sh" temporary--chorebox-configure.pl

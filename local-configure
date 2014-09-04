@@ -52,6 +52,9 @@ fi
 if [ -f "robust.flag" ]; then
   try_backup_on=yes
 fi
+if [ -f "robust-in.flag" ]; then
+  try_backup_on=yes
+fi
 if [ $try_backup_on = $say_no ]; then
   exit 3
 fi
