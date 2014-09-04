@@ -32,7 +32,7 @@ native_conf_here=yes
 
 # Let us try to compile the C-based version here:
 sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-configure \
-"${origidir}/chorebox-configure/main.c" || try_backup_on=no
+"${origidir}/chorebox-configure-src/main.c" || try_backup_on=no
 
 
 if [ $try_backup_on = $say_no ]; then

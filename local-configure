@@ -32,8 +32,8 @@ native_conf_here=yes
 
 # Let us try to compile the C-based version here:
 sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
-  "${origidir}/chorebox-in/autodetect_home_bin_dir.c" \
-  "${origidir}/chorebox-in/own_this_dir.c" \
+  "${origidir}/chorebox-in-src/autodetect_home_bin_dir.c" \
+  "${origidir}/chorebox-in-src/own_this_dir.c" \
   "${origidir}/libchorebox/csrc/chorebox_apend_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_join_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_command_line.c" \
@@ -43,7 +43,7 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/chorebox_str_lis_dump.c" \
   "${origidir}/libchorebox/csrc/chorebox_free_str_list.c" \
   "${origidir}/libchorebox/csrc/chorebox_str_lis_apnd.c" \
-"${origidir}/chorebox-in/main.c" || try_backup_on=no
+"${origidir}/chorebox-in-src/main.c" || try_backup_on=no
 
 
 if [ $try_backup_on = $say_no ]; then
