@@ -43,6 +43,7 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/chorebox_str_lis_dump.c" \
   "${origidir}/libchorebox/csrc/chorebox_free_str_list.c" \
   "${origidir}/libchorebox/csrc/chorebox_str_lis_apnd.c" \
+  "${origidir}/libchorebox/csrc/chorebox_exec_b.c" \
 "${origidir}/chorebox-in-src/main.c" || try_backup_on=no
 
 

@@ -19,5 +19,7 @@
 #ifndef LOCAL_INC__CHOREBOX_CONFIGURE__H
 #define LOCAL_INC__CHOREBOX_CONFIGURE__H
 
+#include <chorebox.h>
+
 #endif
 
