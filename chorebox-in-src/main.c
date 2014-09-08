@@ -115,6 +115,7 @@ int main ( int argc, char **argv, char **env )
   
   
   chorebox_str_lis_apnd(&final_comand,"sh");
+  chorebox_str_lis_apnd(&final_comand,the_config_scrip);
   chorebox_str_lis_dump(&legacy_options,&final_comand);
   chorebox_str_lis_dump(&myown_options,&final_comand);
   
