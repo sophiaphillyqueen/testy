@@ -34,6 +34,9 @@ native_conf_here=yes
 sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/chorebox-in-src/autodetect_home_bin_dir.c" \
   "${origidir}/chorebox-in-src/own_this_dir.c" \
+  "${origidir}/chorebox-in-src/if_not_specified.c" \
+  "${origidir}/chorebox-in-src/specified_var_option.c" \
+  "${origidir}/chorebox-in-src/show_usage_error.c" \
   "${origidir}/libchorebox/csrc/chorebox_apend_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_join_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_command_line.c" \
@@ -86,7 +89,9 @@ temporary--chorebox-in.pl
 
 
 if [ $native_conf_here = $say_yes ]; then
+  echo BEFORE:
   exec ./temporary--chorebox-in "${origidir}/configure" "$@"
+  echo AFTER:
 else
   perl -c temporary--chorebox-in.pl || exit 4
   exec perl temporary--chorebox-in.pl "${origidir}/configure" "$@"

@@ -46,6 +46,12 @@ bool autodetect_home_bin_dir ( char **rg_a );
 //   If it fails due to memory allocation error, it does not
 // return at all, but terminates the program with error.
 
+bool found_on_list ( char *rg_a, chorebox_str_list *rg_b );
+// Searches for a specified dir-var format option on for
+// the dir-variable <rg_a> on the argument-list specified
+// by <rg_b>.
+// Same source file as specified_var_option():
+
 bool if_not_specified ( char *rg_a, char *rg_b );
 // If the dir-variable named <rg_a> is specified among the legacy
 // options, do nothing and return -false-. Otherwise, add that
@@ -63,6 +69,12 @@ bool own_this_dir ( char *rg_a );
 void show_usage_error ( char *rg_a );
 // Shows an error-message related to this program's usage -- and
 // then terminates the program with failure.
+
+bool string_matches_dirvar_opt ( char *rg_a, char *rg_b );
+// Checks to see if <rg_b> looks like an option specifying
+// the dir-var named in <rg_a> --- and returns -true- if it
+// is and -false- if it is not.
+// Same source file as specified_var_option():
 
 bool specified_var_option ( char *rg_a );
 // Returns -true- if the directory-variable named by <rg_a> is
