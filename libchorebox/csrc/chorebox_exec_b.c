@@ -18,42 +18,38 @@
 // ########################
 
 #include <chorebox.h>
+#include <stdio.h>
 #include <unistd.h>
 
 void chorebox_exec_b ( chorebox_str_list *rg_a )
 {
-  size_t lc_argbfsiz;
-  chorebox_str_list *lc_trc;
-  char **lc_neoarg;
-  char **lc_putter;
+  char *lc_fildes;
+  char *lc_filsorc;
+  char *lc_epath;
   
-  // First, we find out how much room is needed
-  // in the buffer.
-  lc_argbfsiz = 1;
-  lc_trc = rg_a;
-  while ( lc_trc != NULL )
+  // Can't do much if we are given an empty command line.
+  if ( rg_a == NULL )
   {
-    lc_argbfsiz++;
-    lc_trc = lc_trc->nex;
+    fprintf(stderr,"\n%s: FATAL ERROR: chorebox_exec_b confusion:\n",chorebox_argv[0]);
+    fprintf(stderr,"    It appears as though it was given an empty command line.\n\n");
+    fflush(stderr);
+    exit(6);
   }
-  lc_argbfsiz *= sizeof(char *);
   
-  // Now we mallocate it ...
-  lc_neoarg = chorebox_mlc(lc_argbfsiz);
-  
-  // And we now load the new array;
-  lc_putter = lc_neoarg;
-  lc_trc = rg_a;
-  while ( lc_trc != NULL )
+  // And we also can't proceed if we can't find where the
+  // executable is located.
+  lc_filsorc = (rg_a->str);
+  lc_epath = getenv("PATH");
+  lc_fildes = chorebox_run_from_path(lc_filsorc,lc_epath);
+  if ( lc_fildes == NULL )
   {
-    *lc_putter = lc_trc->str;
-    lc_putter++;
-    lc_trc = lc_trc->nex;
+    fprintf(stderr,"\n%s: FATAL ERROR: Could not find \"%s\":\n",chorebox_argv[0],lc_filsorc);
+    fprintf(stderr,"\n SEARCHED: %s:\n\n",lc_epath);
+    fflush(stderr);
+    exit(7);
   }
-  *lc_putter = NULL;
   
-  // And we now do the big exec ....
-  execv(getenv("PATH"),lc_neoarg);
+  // But if none of these obstacles present themselves, then let us proceed.
+  chorebox_exec_a(lc_fildes,rg_a);
 }
-
 

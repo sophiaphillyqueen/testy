@@ -53,6 +53,15 @@ char *chorebox_apend_string ( char **rg_a, char *rg_b );
 //   And the only way this will be NULL is if both <rg_b> and the
 // going-in value of <*rg_a> are NULL.
 
+bool chorebox_check_cmd_file ( char *rg_a );
+// Given the filename <rg_a>, this function does the best it can
+// to determine if it is a valid location of an executable - and
+// returns a boolean that indicates -true- if the answer is yes.
+//   Earlier implementations of this function may only be able
+// to test for the existence of a file --- but hopefully, later
+// implementations may actually be able to assess the file's
+// executability (as in, permissions).
+
 chorebox_str_list *chorebox_colsep_to_list ( char *rg_a );
 // The argument is a list (generally one of directories) stored as
 // a C string formatted in the manner of the PATH environment variable.
@@ -70,12 +79,31 @@ void chorebox_command_line ( int rg_a, char **rg_b, char **rg_c );
 // The return value is "void" because, if used properly, there should
 // be nothing at all for this function to report back.
 
+void chorebox_exec_a ( char *rg_a, chorebox_str_list *rg_b );
+// This it the basest (i.e. closest to the system) of all the
+// chorebox_exec_*() functions - of which all other functions
+// of this group are mere wrappers.
+//   The first argument is the location of a file that can
+// be executed -- the second one is a <chorebox_str_list>
+// representation of the command-line that the executable
+// (be it a binary or a "#!"-qualified script) will be
+// run with.
+//   This function does not consult PATH because if that must
+// be done, it is the job of a wrapper function to do so.
+
 void chorebox_exec_b ( chorebox_str_list *rg_a );
 // As with all the chorebox_exec_*() functions, this one does an
 // exec based on a string-list - in this case in argument <rg_a>.
 // If the first item on the list is free of any forward-slash
 // characters, it will attempt to resolve the location of the
 // command along the PATH environment variable.
+
+void chorebx_free_dyn_string ( char **rg_a );
+// This function wraps the free() function for a dyn-alloc
+// string. As is seen, the argument is a character-handle
+// rather than a character pointer. This is so that if
+// the string given to it isn't a NULL string, then after
+// the free() operation, it can be *set* to NULL.
 
 void chorebox_free_str_list ( chorebox_str_list *rg_a );
 // This function frees an entire <chorebox_str_list> linked-list
@@ -127,6 +155,24 @@ void *chorebox_mlc (size_t size);
 // but the possibility of calling malloc() *directly* in those
 // situations is not hindered by the fact that there is now
 // this wrapper-function for *other* situations.
+
+char *chorebox_run_from_path ( char *rg_a, char *rg_b );
+// This function takes an executable named in <rg_a> and
+// tries to find it's location in the local filesystem. The
+// search path is specified by <rg_b> -- not by environment
+// variable reference, but by actual contents.
+//   This function returns NULL if it fails on account of
+// none of the possible-locations passing it's test.
+//   As with many functions here, this function will not
+// return at all, but terminate the program with failure
+// instead, if it fails on account of a memory allocation
+// failure.
+//   NOTE: This function not only does string allocation
+// during it's internal calculations (which it does) but
+// the string it returns upon success is *always* something
+// it dynamically allocated. Even if it is verbatim to the
+// string in <rg_a>, it is still a copy and not the same
+// copy of the string.
 
 bool chorebox_str_lis_apnd ( chorebox_str_list **rg_a, char *rg_b );
 // Apends a -copy- of the string specified in <rg_b> onto the end
