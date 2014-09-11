@@ -38,33 +38,19 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-configure \
 if [ $try_backup_on = $say_no ]; then
   native_conf_here=no
 fi
-if [ -f "robust.flag" ]; then
-  try_backup_on=yes
-fi
-if [ -f "robust-configure.flag" ]; then
-  try_backup_on=yes
-fi
+#if [ -f "robust.flag" ]; then
+#  try_backup_on=yes
+#fi
+#if [ -f "robust-configure.flag" ]; then
+#  try_backup_on=yes
+#fi
 if [ $try_backup_on = $say_no ]; then
   exit 3
 fi
 
+exec ./temporary--chorebox-configure Makefile.pre \
+  --srcdir="${origidir}" \
+"${@}"
+exit
 
-# Now I assemble the file: temporary--chorebox-configure.pl --- a
-# *temporary* copy of the configuration script.
-sh "${origidir}/perlstrict.sh" temporary--chorebox-configure.pl
-sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure.seg.pl" \
-temporary--chorebox-configure.pl
-
-sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" \
-temporary--chorebox-configure.pl
-
-sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" \
-temporary--chorebox-configure.pl
-
-sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
-temporary--chorebox-configure.pl
-
-
-
-exec perl temporary--chorebox-configure.pl --srcdir="${origidir}" "${@}"
 

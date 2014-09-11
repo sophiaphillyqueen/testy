@@ -24,6 +24,25 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct chorebox_safe_str {
+  size_t siz;
+  char *loc;
+} chorebox_safe_str;
+
+typedef struct chorebox_dataset {
+  char *nom;
+  int typ; // Numeric code for which aspect of union 'v' is active (0=null)
+  union v {
+    long nt; // 1 = integer
+    double fl; // 2 = float
+    char *cs; // 3 = C string
+    chorebox_safe_str ss; // 4 = safe string
+    struct chorebox_dataset *dt; // 5 = array & 6 = object
+    void *ms; // 7+ = yet undefined
+  };
+  struct chorebox_dataset *nex;
+} chorebox_dataset;
+
 typedef struct chorebox_str_list {
   char *str;
   struct chorebox_str_list *nex;
@@ -33,16 +52,6 @@ typedef struct chorebox_str_list {
 extern int chorebox_argc;
 extern char **chorebox_argv;
 extern char **chorebox_env;
-
-//size_t chompify ( char **rg_a, size_t rg_b );
-// This function acts like PERL's &chomp function on the <rg_a>
-// string. Only instead of acting like &chomp is called just
-// once, it acts like &chomp was called whatever number of times
-// the <rg_b> argument specifies. The return value of this
-// function is the number of characters that actually got
-// removed from the end of the string.
-//   This function will not return, but will terminate the program,
-// should there be a memory-allocation error.
 
 char *chorebox_apend_string ( char **rg_a, char *rg_b );
 // This function appends (by copy )the contents of the string <rg_b>
@@ -192,14 +201,6 @@ void chorebox_str_lis_dump ( chorebox_str_list **rg_a, chorebox_str_list **rg_b 
 //   Nothing to report back since I can't see anything going wrong
 // if this is used properly --- and if used improperly, I can't
 // see any problem that I'd be able to error-handle.
-
-//bool pipe_grab(char *rg_a, char **rg_b);
-// This function executes the shell command specified by the <rg_a>
-// argument, and pipe-captures it's output, saving it to the string
-// specified by <rg_b>. It returns -true- if successful and -false-
-// if anything goes detectibly awry - except for a failure in memory
-// allocation. If that happens, it is treated as a terminal error
-// for the program.
 
 #endif
 
