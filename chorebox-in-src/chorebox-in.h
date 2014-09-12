@@ -66,6 +66,10 @@ bool own_this_dir ( char *rg_a );
 //   Currently, the only test it knows for this purpose is if
 // the directory is within the hierarchy of the home directory.
 
+void process_version_query ( void );
+// A function (who's source code is generated automatically)
+// for processing the --version option.
+
 void show_usage_error ( char *rg_a );
 // Shows an error-message related to this program's usage -- and
 // then terminates the program with failure.

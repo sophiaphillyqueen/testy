@@ -46,9 +46,8 @@ int main ( int argc, char **argv, char **env )
     show_usage_error("Failure to specify the \"configure\" script.");
   }
   
-  // Eventually, support for the "--version" option will be
-  // added here. However, not before we get <chorebox-configure>
-  // to create the necessary C file.
+  // Process the version-query
+  process_version_query();
   
   // Now, if the script is still running,  the remaining arguments
   // are all options that will in turn be passed to the -configure-

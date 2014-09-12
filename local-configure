@@ -32,6 +32,7 @@ native_conf_here=yes
 
 # Let us try to compile the C-based version here:
 sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
+  "${origidir}/temp-c-code/process_version_query.c" \
   "${origidir}/chorebox-in-src/autodetect_home_bin_dir.c" \
   "${origidir}/chorebox-in-src/own_this_dir.c" \
   "${origidir}/chorebox-in-src/if_not_specified.c" \
@@ -52,6 +53,7 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-in \
   "${origidir}/libchorebox/csrc/chorebox_run_from_path.c" \
   "${origidir}/libchorebox/csrc/chorebx_free_dyn_string.c" \
   "${origidir}/libchorebox/csrc/chorebox_check_cmd_file.c" \
+  "${origidir}/libchorebox/csrc/chorebox_samestrg_c.c" \
 "${origidir}/chorebox-in-src/main.c" || try_backup_on=no
 
 

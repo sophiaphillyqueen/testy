@@ -1,5 +1,4 @@
 // chorebox-configure - Called by chorebox-based 'configure' scripts to, well, configure
-// main.c - Source-code for this function:
 // Copyright (C) 2014  Sophia Elizabeth Shapira
 //
 // This program is free software: you can redistribute it and/or modify
@@ -17,12 +16,15 @@
 //
 // ########################
 
-#include "chorebox-configure.h"
+#ifndef LOCAL_INC__CHOREBOX_CONFIGURE__H
+#define LOCAL_INC__CHOREBOX_CONFIGURE__H
 
-int main ( int argc, char **argv, char **env )
-{
-  // Let us register the command-line environment to the "libchorebox" library.
-  chorebox_command_line(argc,argv,env);
-  
-}
+#include <chorebox.h>
+
+
+void process_version_query ( void );
+// A function (who's source code is generated automatically)
+// for processing the --version option.
+
+#endif
 

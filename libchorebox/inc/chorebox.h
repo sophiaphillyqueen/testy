@@ -24,25 +24,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct chorebox_safe_str {
-  size_t siz;
-  char *loc;
-} chorebox_safe_str;
-
-typedef struct chorebox_dataset {
-  char *nom;
-  int typ; // Numeric code for which aspect of union 'v' is active (0=null)
-  union v {
-    long nt; // 1 = integer
-    double fl; // 2 = float
-    char *cs; // 3 = C string
-    chorebox_safe_str ss; // 4 = safe string
-    struct chorebox_dataset *dt; // 5 = array & 6 = object
-    void *ms; // 7+ = yet undefined
-  };
-  struct chorebox_dataset *nex;
-} chorebox_dataset;
-
 typedef struct chorebox_str_list {
   char *str;
   struct chorebox_str_list *nex;
@@ -182,6 +163,10 @@ char *chorebox_run_from_path ( char *rg_a, char *rg_b );
 // it dynamically allocated. Even if it is verbatim to the
 // string in <rg_a>, it is still a copy and not the same
 // copy of the string.
+
+bool chorebox_samestrg_c ( char *rg_a, char *rg_b );
+// This function returns -true- if the two C strings are identical
+// and -false- if they are not.
 
 bool chorebox_str_lis_apnd ( chorebox_str_list **rg_a, char *rg_b );
 // Apends a -copy- of the string specified in <rg_b> onto the end

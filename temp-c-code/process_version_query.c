@@ -1,4 +1,4 @@
-// chorebox-configure - Called by chorebox-based 'configure' scripts to, well, configure
+// process_version_query.c - A stop-gap version of this function
 // Copyright (C) 2014  Sophia Elizabeth Shapira
 //
 // This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,26 @@
 //
 // ########################
 
-#ifndef LOCAL_INC__CHOREBOX_CONFIGURE__H
-#define LOCAL_INC__CHOREBOX_CONFIGURE__H
-
 #include <chorebox.h>
+#include <stdio.h>
 
-#endif
+void process_version_query ( void );
+
+void process_version_query ( void )
+{
+  int lc_counto;
+  lc_counto = 1;
+  while ( lc_counto < chorebox_argc )
+  {
+    if ( chorebox_samestrg_c(chorebox_argv[lc_counto],"--version") )
+    {
+      printf("unversioned-temporary-copy\n");
+      fflush(stdout);
+      exit(0);
+    }
+    lc_counto++;
+  }
+  return;
+}
+
 
