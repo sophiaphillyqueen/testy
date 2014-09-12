@@ -28,7 +28,7 @@ int main ( int argc, char **argv, char **env )
   process_version_query();
   
   // We create the object for parsing it all.
-  lc_parceio = new_parser();
+  lc_parceio = choreboxcf_parser__new();
   
   if ( argc < 2 )
   {
@@ -54,7 +54,7 @@ int main ( int argc, char **argv, char **env )
   
   // Finally, the moment we've been waiting for --- when we
   // *execute* the object.
-  
+  run_main_func(
   
 }
 

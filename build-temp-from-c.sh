@@ -44,7 +44,9 @@ do
     obje_fil="tmp-obj/file-${obje_num}.o"
     obje_litny="${obje_litny} ${obje_fil}"
     echo "COMPILE ${obje_num}: ${argunas}:"
-    "${local_cc}" "-I${origidir}/libchorebox/inc" -o "${obje_fil}" -c "${argunas}" $extra_arg_c || exit 3
+    "${local_cc}" "-I${origidir}/libchorebox/inc" "-I${origidir}/libchoreboxcf/inc" \
+      -o "${obje_fil}" -c "${argunas}" \
+    $extra_arg_c || exit 3
   fi
   first_round=no
 done
