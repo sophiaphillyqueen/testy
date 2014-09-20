@@ -30,6 +30,8 @@ my %make_label;
 my %proj_info_s;
 my %proj_info_l;
 
+my $adendia;
+
 foreach $argum (@ARGV)
 {
   &try_process_argum($argum);
@@ -212,13 +214,29 @@ while ( $make_indx < ( $make_length - 0.2 ) )
 }
 
 
-
+# Now we output all the variables we need:
 {
   my $lc_vrot;
   foreach $lc_vrot (@lisdirs)
   {
     print DST "\n" . $lc_vrot . " = " . $valvar{$lc_vrot};
   }
+}
+print DST "\n";
+
+
+# And we now do the main looping through the recipe ....
+$make_indx = 0;
+while ( $make_indx < ( $make_length - 0.2 ) )
+{
+  $adendia = "";
+  &act_by_line($make_lines[$make_indx]);
+  if ( $adendia ne "" )
+  {
+    print DST $adendia;
+  }
+  
+  $make_indx = int($make_indx + 1.2);
 }
 
 

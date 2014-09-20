@@ -62,6 +62,7 @@ if [ $native_conf_here = $say_no ]; then
   sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/act_by_line.fn.pl" temporary--chorebox-configure
   
   chmod 755 temporary--chorebox-configure
   echo
