@@ -38,6 +38,12 @@ sh "${origidir}/build-temp-from-c.sh" temporary--chorebox-cf \
 if [ $try_backup_on = $say_no ]; then
   native_conf_here=no
 fi
+
+# For now, I explicitly *want* the PERL version to run:
+native_conf_here=no
+try_backup_on=yes
+
+
 #if [ -f "robust.flag" ]; then
 #  try_backup_on=yes
 #fi
@@ -48,7 +54,20 @@ if [ $try_backup_on = $say_no ]; then
   exit 3
 fi
 
-exec ./temporary--chorebox-configure Makefile.pre \
+if [ $native_conf_here = $say_no ]; then
+  echo
+  echo "Binary build unsatisfactory. Commencing PERL version."
+  sh "${origidir}/perlstrict.sh" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure.seg.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" temporary--chorebox-configure
+  
+  chmod 755 temporary--chorebox-configure
+  echo
+fi
+
+exec ./temporary--chorebox-configure \
   --srcdir="${origidir}" \
 "${@}"
 exit

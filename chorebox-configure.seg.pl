@@ -167,13 +167,6 @@ sub try_process_argum {
 
 
 open DST, "| cat > Makefile";
-{
-  my $lc_vrot;
-  foreach $lc_vrot (@lisdirs)
-  {
-    print DST "\n" . $lc_vrot . " = " . $valvar{$lc_vrot};
-  }
-}
 
 # Now comes the part where we will load the Makefile recipe
 # to active memory:
@@ -189,19 +182,45 @@ open DST, "| cat > Makefile";
 }
 
 # And we look for the list of place-labels:
+# Also - all the carry-over comments are to be displayed at this
+# point as well. That is, comment-lines that begin with ":#:".
+# This is done at the same time as the goto labels so that the copyright
+# notice can appear at the *beginning* of the Makefile rather than
+# *after* the Makefile variables are laid out. Comments that are meant
+# to be interspersed throughout the Makefile should be displayed as
+# ordinary Makefile text who's lines begin with the "#". And comments
+# that are only needed in the recipe file should begin with two
+# consecutive colons at the beginning of the line.
 $make_indx = 0;
 %make_label = {};
 while ( $make_indx < ( $make_length - 0.2 ) )
 {
   my @lc_a;
-  @lc_a = split(/:/,$make_lines[$make_indx]);
+  my @lc_b;
+  @lc_a = split(/:/,$make_lines[$make_indx],3);
+  @lc_b = split(/:/,$lc_a[2]);
   if ( $lc_a[1] eq "label" )
   {
-    system("echo","Label marked: " . $lc_a[2] . ": " . $make_indx . ":");
-    $make_label{$lc_a[2]} = $make_indx;
+    system("echo","Label marked: " . $lc_b[0] . ": " . $make_indx . ":");
+    $make_label{$lc_b[0]} = $make_indx;
+  }
+  if ( $lc_a[1] eq "#" )
+  {
+    print DST "#" . $lc_a[2] . "\n";
   }
   $make_indx = int($make_indx + 1.2);
 }
+
+
+
+{
+  my $lc_vrot;
+  foreach $lc_vrot (@lisdirs)
+  {
+    print DST "\n" . $lc_vrot . " = " . $valvar{$lc_vrot};
+  }
+}
+
 
 
 print DST "\n";
