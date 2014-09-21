@@ -17,13 +17,48 @@
 :#: ########################
 :#:
 
+:setvar:compile:gcc
+:setvar:cdbg:off:
+:varfromopt:cdbg:--devel_main:
+:varfromopt:cdbg:--devel_e:
+:varfromopt:cdbg:--devel_e_c:
+:stack:var:cdbg:
+:stack:lit:off
+:ifsame-to:cdbg-off:
+:apnvar:compile: -Wall -Werror
+:label:cdbg-off:
+:clearstack:
+
+:brandnew-array:chorebox-in-src--c:autodetect_home_bin_dir:own_this_dir:if_not_specified:specified_var_option:show_usage_error
+
+
 :-:
-:-:all: chorebox-configure
+:-:all: chorebox-configure chorebox-in
 :->:chmod 755 chorebox-configure
 
 :-:
 :-:install: all
 :->:cp chorebox-configure "$(farm_bindir)/."
+
+
+:-:
+:-:chorebox-in:
+:foreach:chorebox-in-src--c:chore-c:
+	:*: chorebox-in-obj/:
+	:echo:chore-c:
+	:*:.o
+:eachend:
+:->:
+:echo:compile:
+:*: -o chorebox-in
+:foreach:chorebox-in-src--c:chore-c:
+	:*: chorebox-in-obj/:
+	:echo:chore-c:
+	:*:.o
+:eachend:
+
+
+
 
 
 :-:
