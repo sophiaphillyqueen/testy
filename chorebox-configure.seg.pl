@@ -26,11 +26,14 @@ my $argum;
 my @make_lines;
 my $make_length;
 my $make_indx;
-my %make_label;
+my %make_label; # The directory of all goto destination-lines by label
 my %proj_info_s;
 my %proj_info_l;
 
 my $adendia;
+
+my %strgvars = {}; # All the string variables in thought space
+my @litstack = (); # Logical string-stack (array beginning = top)
 
 foreach $argum (@ARGV)
 {
@@ -168,7 +171,7 @@ sub try_process_argum {
 &autom("farm_sbindir",$valvar{"sbindir"});
 
 
-open DST, "| cat > Makefile";
+open DST, "| cat > Makefile.tmp";
 
 # Now comes the part where we will load the Makefile recipe
 # to active memory:
@@ -243,6 +246,7 @@ while ( $make_indx < ( $make_length - 0.2 ) )
 
 print DST "\n";
 close DST;
+system("mv","Makefile.tmp","Makefile");
 
 
 

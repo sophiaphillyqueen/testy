@@ -18,10 +18,10 @@
 :#:
 
 :setvar:compile:gcc
-:setvar:cdbg:off:
-:varfromopt:cdbg:--devel_main:
-:varfromopt:cdbg:--devel_e:
-:varfromopt:cdbg:--devel_e_c:
+:setvar:cdbg:off
+:varfromopt:cdbg:--devel_main:irp
+:varfromopt:cdbg:--devel_e:irp
+:varfromopt:cdbg:--devel_e_c:irp
 :stack:var:cdbg:
 :stack:lit:off
 :ifsame-to:cdbg-off:
@@ -40,12 +40,16 @@
 :-:install: all
 :->:cp chorebox-configure "$(farm_bindir)/."
 
+:-:
+:-:uninstall:
+:->:rm -rf "$(farm_bindir)/chorebox-configure"
+
 
 :-:
 :-:chorebox-in:
 :foreach:chorebox-in-src--c:chore-c:
 	:*: chorebox-in-obj/:
-	:echo:chore-c:
+	:echo:var:chore-c:
 	:*:.o
 :eachend:
 :->:
@@ -53,7 +57,7 @@
 :*: -o chorebox-in
 :foreach:chorebox-in-src--c:chore-c:
 	:*: chorebox-in-obj/:
-	:echo:chore-c:
+	:echo:var:chore-c:
 	:*:.o
 :eachend:
 
@@ -68,6 +72,7 @@
 	:*: $(srcdir)/apnd_shrunk_argument.fn.pl
 	:*: $(srcdir)/goodarray.fn.pl
 	:*: $(srcdir)/act_by_line.fn.pl
+	:*: $(srcdir)/action__stack.fn.pl
 ::
 :->:sh "$(srcdir)/perlstrict.sh" chorebox-configure-tmp
 :->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/chorebox-configure.seg.pl" chorebox-configure-tmp
@@ -75,6 +80,7 @@
 :->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/apnd_shrunk_argument.fn.pl" chorebox-configure-tmp
 :->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/goodarray.fn.pl" chorebox-configure-tmp
 :->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/act_by_line.fn.pl" chorebox-configure-tmp
+:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/action__varfromopt.fn.pl" chorebox-configure-tmp
 :->:mv chorebox-configure-tmp chorebox-configure
 temporary--chorebox-configure
 
