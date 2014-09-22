@@ -30,14 +30,47 @@ my %make_label; # The directory of all goto destination-lines by label
 my %proj_info_s;
 my %proj_info_l;
 
+
+my $truthiness; # Logic variable for acceptance or rejection of -certain- arguments
+
 my $adendia;
 
 my %strgvars = {}; # All the string variables in thought space
+my %strarays = {};
 my @litstack = (); # Logical string-stack (array beginning = top)
+
+
+# The following variables are used in "foreach" looping:
+my @frochstack = (); # Stack of inactive "foreaches" (needed for nesting)
+my $frochstart = 0; # Beginning line of the "foreach" reference
+my @frochlist = (); # List of yet-to-be-shifted elements
+my $frochvari = ""; # Name of variable the loop writes to:
+my $frochfont = ""; # Name of array the loop writes from (stored only for thought output)
+
 
 foreach $argum (@ARGV)
 {
   &try_process_argum($argum);
+}
+
+
+# This next function will return -true- if the second argument is
+# the beginning-string of the first-argument UNLESS the two be
+# identical -- and -false- if the conditions for -true- are not
+# met.
+#   Not the most *efficient* implementation -- but hopefully a
+# *reliable* one.
+sub beginningst {
+  my $lc_a;
+  my $lc_b;
+  
+  ($lc_a,$lc_b) = @_;
+  while ( $lc_a ne "" )
+  {
+    chop($lc_a);
+    if ( $lc_a eq $lc_b ) { return ( 2 > 1 ); }
+  }
+  return ( 1 > 2 );
 }
 
 sub try_process_argum {
@@ -83,12 +116,17 @@ sub try_process_argum {
     return;
   }
   
-  # The kinds of options that this can handle is not yet exhaustive
-  # enough for me to warrant terminating the program if it fails
-  # to handle one -- but we should at least get the programmer's
-  # attention.
-  system("echo","\nCAN NOT YET HANDLE OPTION:\n  " . $_[0] . ":\n");
-  sleep(2);
+  $truthiness = ( 1 > 2 );
+  if (!($truthiness)) { $truthiness =  &beginningst($_[0],"--devel_"); }
+  if ( $truthiness )
+  {
+    system("echo","Accepting Option: " . $_[0] . ":");
+    return;
+  }
+  
+  # If we made it this far, that is because the argument passed is
+  # not a recognized option.
+  die "\nCAN NOT YET HANDLE OPTION:\n  " . $_[0] . ":\n\n";
 }
 
 &autom("srcdir",".");

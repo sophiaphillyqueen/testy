@@ -2,6 +2,7 @@
 # action__ifsame_to - What "chorebox-configure" does for "ifsame-to" directive.
 # meaning_of - Interprets a complex string definition
 # then_goto_label - Goes to a specific label of the Makefile recipe
+# report_array - Reports the setting of a Thought Array
 # Copyright (C) 2014  Sophia Elizabeth Shapira
 #
 # This program is free software: you can redistribute it and/or modify
@@ -67,3 +68,21 @@ sub then_goto_label {
   system("echo","  Go to Label: " . $_[0] . ":");
   $make_indx = $lc_a;
 }
+
+sub report_array {
+  my $lc_aa;
+  my $lc_ab;
+  my @lc_b;
+  my $lc_c;
+  
+  $lc_aa = $_[0];
+  $lc_ab = $strarays{$lc_aa};
+  @lc_b = @$lc_ab;
+  
+  system("echo","  Thought array set: " . $lc_aa . ":");
+  foreach $lc_c (@lc_b)
+  {
+    system("echo","    -" . "> " . $lc_c . ":");
+  }
+}
+

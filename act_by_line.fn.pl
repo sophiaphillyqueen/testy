@@ -53,9 +53,11 @@ sub act_by_line {
   if ( $lc_a[1] eq "setvar" )
   {
     my @lc2_a;
+    my $lc2_b;
     @lc2_a = split(/:/,$lc_a[2],2);
-    $strgvars{$lc2_a[0]} = $lc2_a[1];
-    system("echo","  Thought variable: " . $lc2_a[0] . ": = " . $lc2_a[1] . ":");
+    $lc2_b = &meaning_of($lc2_a[1]);
+    $strgvars{$lc2_a[0]} = $lc2_b;
+    system("echo","  Thought variable: " . $lc2_a[0] . ": = " . $lc2_b . ":");
     return;
   }
   
@@ -74,6 +76,62 @@ sub act_by_line {
   if ( $lc_a[1] eq "ifsame-to" )
   {
     &action__ifsame_to($lc_a[2]);
+    return;
+  }
+  
+  if ( $lc_a[1] eq "apnvar" )
+  {
+    my @lc2_a;
+    my $lc2_b;
+    
+    @lc2_a = split(/:/,$lc_a[2],2);
+    $lc2_b = $strgvars{$lc2_a[0]};
+    $lc2_b .= &meaning_of($lc2_a[1]);
+    $strgvars{$lc2_a[0]} = $lc2_b;
+    system("echo","  Thought variable: " . $lc2_a[0] . ": = " . $lc2_b . ":");
+    return;
+  }
+  
+  if ( $lc_a[1] eq "clearstack" )
+  {
+    @litstack = ();
+    system("echo","  Logic Stack Cleared.");
+    return;
+  }
+  
+  if ( $lc_a[1] eq "brandnew-array" )
+  {
+    my @lc2_a;
+    my $lc2_b;
+    
+    @lc2_a = split(/:/,$lc_a[2]);
+    if ( &goodarray(@lc2_a) )
+    {
+      $lc2_b = shift(@lc2_a);
+      $strarays{$lc2_b} = [@lc2_a];
+      &report_array($lc2_b);
+      return;
+    }
+  }
+  
+  if ( $lc_a[1] eq "echo" )
+  {
+    $adendia .= &meaning_of($lc_a[2]);
+    return;
+  }
+  
+  
+  # Now here is what is done if the current directive is the start
+  # of a -foreach- loop:
+  if ( $lc_a[1] eq "foreach" )
+  {
+    &action__foreach($lc_a[2]);
+    return;
+  }
+  
+  if ( $lc_a[1] eq "eachend" )
+  {
+    &action__eachend;
     return;
   }
   
