@@ -17,6 +17,11 @@
 :#: ########################
 :#:
 
+
+::# Here cometh the part where we define the compilation command.
+::# Remember, if the appropriate debugging flag is on, it must
+::# be given the "-Wall -Werror" options so that we won't waltz
+::# through coding mistakes.
 :setvar:compile:lit:gcc
 :setvar:cdbg:lit:off
 :varfromopt:cdbg:--devel_main:irp
@@ -29,7 +34,27 @@
 :label:cdbg-off:
 :clearstack:
 
-:brandnew-array:chorebox-in-src--c:autodetect_home_bin_dir:own_this_dir:if_not_specified:specified_var_option:show_usage_error
+# Now we generate the version-ID:
+:setvar:build-version:info:vrsn:
+:setvar:build-moment:dqry:date +%Y-%m%d-%H%M%S
+:stack:info:rels:
+:stack:lit:yes:
+:ifsame-to:version-without-moment:
+:apnvar:build-version:lit:-build-
+:apnvar:build-version:var:build-moment:
+:goto:version-complete:
+:label:version-without-moment:
+:apnvar:build-version:lit:-release
+:label:version-complete:
+
+:setvar:perlloc:qry:which perl
+
+:brandnew-array:chorebox-in-src--c:autodetect_home_bin_dir:own_this_dir:if_not_specified:specified_var_option:show_usage_error:main
+
+:brandnew-array:choreobx-configure-parts:chorebox-configure.seg.pl:autom.fn.pl:apnd_shrunk_argument.fn.pl:goodarray.fn.pl:act_by_line.fn.pl:action__varfromopt.fn.pl:action__stack.fn.pl:action__foreach.fn.pl
+
+
+:brandnew-array:lib--chorebox--c:vars:chorebox_mlc:chorebox_apend_string:chorebox_colsep_to_list:chorebox_free_str_list:chorebox_join_string:chorebox_str_lis_dump:chorebox_command_line:chorebox_exec_b:chorebox_exec_a:chorebox_getcwd:chorebox_run_from_path:chorebox_check_cmd_file:chorebox_str_lis_apnd:chorebx_free_dyn_string:chorebox_samestrg_c
 
 
 :-:
@@ -39,11 +64,59 @@
 :-:
 :-:install: all
 :->:cp chorebox-configure "$(farm_bindir)/."
+:->:cp chorebox-in "$(bindir)/."
 
 :-:
 :-:uninstall:
 :->:rm -rf "$(farm_bindir)/chorebox-configure"
+:->:rm -rf "$(bindir)/chorebox-in"
 
+:-:
+:-:clean:
+:->:rm -rf lib_static-chorebox
+:->:rm -rf chorebox-in-obj
+:->:rm -rf temporary--*
+:->:rm -rf generated
+:->:rm -rf chorebox-in
+:->:rm -rf chorebox-configure
+
+:-:
+:-:generated/process_version_query.o: generated/process_version_query.c
+:*: $(srcdir)/chorebox-in-src/chorebox-in.h
+:*: $(srcdir)/libchorebox/inc/chorebox.h
+:->:
+:echo:var:compile:
+:*: -o generated/process_version_query.o
+:*: "-I$(srcdir)/libchorebox/inc"
+:*: -c generated/process_version_query.c
+
+
+
+
+:-:
+:-:generated/process_version_query.c:
+:*: $(srcdir)/special/process_version_query.c
+:->:mkdir -p generated
+:->:echo "#define THIS_PROGRAMS_VERSION \"
+:echo:var:build-version:
+:*:\"" > generated/process_version_query.tmp-c
+::
+:->:echo "#define THIS_PROGRAMS_SUITENAME \"
+:echo:info:name:
+:*:\"" >> generated/process_version_query.tmp-c
+::
+:->:echo "#define THIS_PROGRAMS_YEAR \"
+:echo:info:year:
+:*:\"" >> generated/process_version_query.tmp-c
+::
+:->:echo "#define THIS_PROGRAMS_HOLDER \"
+:echo:linfo:holder:
+:*:\"" >> generated/process_version_query.tmp-c
+::
+:->:cat "$(srcdir)/special/process_version_query.c" >>
+:*: generated/process_version_query.tmp-c
+::
+:->:mv generated/process_version_query.tmp-c generated/process_version_query.c
 
 :-:
 :-:chorebox-in:
@@ -52,6 +125,12 @@
 	:echo:var:chore-c:
 	:*:.o
 :eachend:
+:foreach:lib--chorebox--c:chore-c:
+	:*: lib_static-chorebox/
+	:echo:var:chore-c:
+	:*:.o
+:eachend:
+:*: generated/process_version_query.o
 :->:
 :echo:var:compile:
 :*: -o chorebox-in
@@ -60,6 +139,52 @@
 	:echo:var:chore-c:
 	:*:.o
 :eachend:
+:foreach:lib--chorebox--c:chore-c:
+	:*: lib_static-chorebox/
+	:echo:var:chore-c:
+	:*:.o
+:eachend:
+:*: generated/process_version_query.o
+
+
+:foreach:chorebox-in-src--c:chore-c:
+	:-:
+	:-:chorebox-in-obj/
+	:echo:var:chore-c:
+	:*:.o: $(srcdir)/chorebox-in-src/
+	:echo:var:chore-c:
+	:*:.c
+	:*: $(srcdir)/chorebox-in-src/chorebox-in.h
+	:*: $(srcdir)/libchorebox/inc/chorebox.h
+	:*: Makefile
+	:->:mkdir -p chorebox-in-obj
+	:->:
+	:echo:var:compile:
+	:*: -o chorebox-in-obj/
+	:echo:var:chore-c:
+	:*:.o "-I$(srcdir)/libchorebox/inc" -c "$(srcdir)/chorebox-in-src/
+	:echo:var:chore-c:
+	:*:.c"
+:eachend:
+
+:foreach:lib--chorebox--c:chore-c:
+	:-:
+	:-:lib_static-chorebox/
+	:echo:var:chore-c:
+	:*:.o: $(srcdir)/libchorebox/csrc/
+	:echo:var:chore-c:
+	:*:.c
+	:*: $(srcdir)/libchorebox/inc/chorebox.h
+	:*: Makefile
+	:->:mkdir -p lib_static-chorebox
+	:->:
+	:echo:var:compile:
+	:*: -o lib_static-chorebox/
+	:echo:var:chore-c:
+	:*:.o "-I$(srcdir)/libchorebox/inc" -c "$(srcdir)/libchorebox/csrc/
+	:echo:var:chore-c:
+	:*:.c"
+:eachend:
 
 
 
@@ -67,22 +192,28 @@
 
 :-:
 :-:chorebox-configure:
-	:*: $(srcdir)/chorebox-configure.seg.pl
-	:*: $(srcdir)/autom.fn.pl
-	:*: $(srcdir)/apnd_shrunk_argument.fn.pl
-	:*: $(srcdir)/goodarray.fn.pl
-	:*: $(srcdir)/act_by_line.fn.pl
-	:*: $(srcdir)/action__stack.fn.pl
+:foreach:choreobx-configure-parts:partname:
+	:*: $(srcdir)/
+	:echo:var:partname:
+:eachend:
 ::
-:->:sh "$(srcdir)/perlstrict.sh" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/chorebox-configure.seg.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/autom.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/apnd_shrunk_argument.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/goodarray.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/act_by_line.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/action__varfromopt.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/action__stack.fn.pl" chorebox-configure-tmp
-:->:sh "$(srcdir)/perldumpy.sh" "$(srcdir)/action__foreach.fn.pl" chorebox-configure-tmp
+:->:rm -rf chorebox-configure-tmp
+:->:echo "#! 
+:echo:var:perlloc:
+:*:" > chorebox-configure-tmp
+:->:echo "use strict;" >> chorebox-configure-tmp
+:foreach:choreobx-configure-parts:partname:
+	:->:echo "# line 1 \"$(srcdir)/
+	:echo:var:partname:
+	:*:\"" >> chorebox-configure-tmp
+	::
+	:->:cat "$(srcdir)/
+	:echo:var:partname:
+	:*:" >> chorebox-configure-tmp
+	::
+	:->:echo >> chorebox-configure-tmp
+:eachend:
+:->:perl -c chorebox-configure-tmp
 :->:mv chorebox-configure-tmp chorebox-configure
 temporary--chorebox-configure
 

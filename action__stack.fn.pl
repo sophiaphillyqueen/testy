@@ -1,5 +1,6 @@
 # action__stack - What "chorebox-configure" does for "stack" directive.
 # action__ifsame_to - What "chorebox-configure" does for "ifsame-to" directive.
+# action__goto - What "chorebox-configure" does for "goto" directive.
 # meaning_of - Interprets a complex string definition
 # then_goto_label - Goes to a specific label of the Makefile recipe
 # report_array - Reports the setting of a Thought Array
@@ -36,6 +37,13 @@ sub action__ifsame_to {
   then_goto_label($lc_a);
 }
 
+sub action__goto {
+  my $lc_a;
+  
+  ($lc_a) = split(/:/,$_[0]);
+  then_goto_label($lc_a);
+}
+
 sub meaning_of {
   my @lc_a;
   my @lc_b;
@@ -47,6 +55,45 @@ sub meaning_of {
   {
     @lc_b = split(/:/,$lc_a[1]);
     return $strgvars{$lc_b[0]};
+  }
+  
+  if ( $lc_a[0] eq "qry" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    
+    $lc2_a = $lc_a[1];
+    $lc2_b = `$lc2_a`; chomp($lc2_b);
+    return $lc2_b;
+  }
+  
+  # Dynamic query -- for things such as build-time.
+  # It's implementation is like the early implementations
+  # of "qry" - except that later on, "qry" will be
+  # altered to check the query in the target-system
+  # query-result file if one is specified - while "dqry"
+  # will always continue to just get the output of a
+  # shell command.
+  if ( $lc_a[0] eq "dqry" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    
+    $lc2_a = $lc_a[1];
+    $lc2_b = `$lc2_a`; chomp($lc2_b);
+    return $lc2_b;
+  }
+  
+  if ( $lc_a[0] eq "info" )
+  {
+    @lc_b = split(/:/,$lc_a[1]);
+    return $proj_info_s{$lc_b[0]};
+  }
+  
+  if ( $lc_a[0] eq "linfo" )
+  {
+    @lc_b = split(/:/,$lc_a[1]);
+    return $proj_info_l{$lc_b[0]};
   }
   
   die "\nUnknown complex string-type: \""
