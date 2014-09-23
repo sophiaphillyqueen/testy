@@ -56,6 +56,8 @@
 
 :brandnew-array:lib--chorebox--c:vars:chorebox_mlc:chorebox_apend_string:chorebox_colsep_to_list:chorebox_free_str_list:chorebox_join_string:chorebox_str_lis_dump:chorebox_command_line:chorebox_exec_b:chorebox_exec_a:chorebox_getcwd:chorebox_run_from_path:chorebox_check_cmd_file:chorebox_str_lis_apnd:chorebx_free_dyn_string:chorebox_samestrg_c
 
+:argv:configure-options:
+
 
 :-:
 :-:all: chorebox-configure chorebox-in
@@ -79,6 +81,8 @@
 :->:rm -rf generated
 :->:rm -rf chorebox-in
 :->:rm -rf chorebox-configure
+:->:rm -rf chorebox-configure-tmp
+
 
 :-:
 :-:generated/process_version_query.o: generated/process_version_query.c
@@ -145,6 +149,17 @@
 	:*:.o
 :eachend:
 :*: generated/process_version_query.o
+
+
+:-:
+:-:Makefile: $(srcdir)/configure $(srcdir)/Makefile.pre
+:*: $(srcdir)/proj-info.txt
+:->:sh "$(srcdir)/configure"
+:foreach:configure-options:confopt:
+	:*: "
+	:echo:var:confopt:
+	:*:"
+:eachend:
 
 
 :foreach:chorebox-in-src--c:chore-c:

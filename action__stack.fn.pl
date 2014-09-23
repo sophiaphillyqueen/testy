@@ -102,6 +102,79 @@ sub meaning_of {
   ;
 }
 
+sub action__argv {
+  my @lc_a;
+  my $lc_b;
+  my @lc_c;
+  my $lc_d;
+  my $lc_e;
+  @lc_a = split(/:/,$_[0]);
+  if ( &badarray(@lc_a) ) { return; }
+  $lc_b = shift(@lc_a);
+  
+  @lc_c = @ARGV;
+  if ( &goodarray(@lc_c) )
+  {
+    $lc_d = shift(@lc_c);
+    ($lc_e) = split(quotemeta("="),$lc_d);
+    if ( $lc_e ne "--srcdir" )
+    {
+      @lc_c = ($lc_d,@lc_c);
+    }
+  }
+  $strarays{$lc_b} = [@lc_c];
+  &report_array($lc_b);
+}
+
+sub action__redun {
+  my @lc_a;
+  my @lc_neoray;
+  my @lc_archoray;
+  my $lc_each_neos;
+  my $lc_each_archos;
+  
+  my $lcd_a;
+  
+  # First we separate the arguments given to the "redun" directive.
+  @lc_a = split(/:/,$_[0]);
+  
+  # Next we (if applicable) unpack the contents of the second array.
+  @lc_neoray = ();
+  if ( ref($strarays{$lc_a[1]}) )
+  {
+    my $lc2_a;
+    $lc2_a = $strarays{$lc_a[1]};
+    @lc_neoray = @$lc2_a;
+  }
+  
+  # And the first array
+  @lc_archoray = ();
+  if ( ref($strarays{$lc_a[0]}) )
+  {
+    my $lc2_a;
+    $lc2_a = $strarays{$lc_a[0]};
+    @lc_archoray = @$lc2_a;
+  }
+  
+  # One by one, we copy each element of the first array onto the end
+  # of the second --- unless it is already *present* in the second
+  foreach $lc_each_archos (@lc_archoray)
+  {
+    my $lc2_ok;
+    $lc2_ok = 10;
+    foreach $lc_each_neos (@lc_neoray)
+    {
+      if ( $lc_each_neos eq $lc_each_archos ) { $lc2_ok = 0; }
+    }
+    if ( $lc2_ok > 5 ) { @lc_neoray = (@lc_neoray,$lc_each_archos); }
+  }
+  
+  # And we save the new version of the second array.
+  $strarays{$lc_a[1]} = [@lc_neoray];
+  &report_array($lc_a[1]);
+}
+
+
 sub then_goto_label {
   my $lc_a;
   

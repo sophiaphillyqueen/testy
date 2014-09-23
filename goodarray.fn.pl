@@ -22,3 +22,10 @@ sub goodarray {
   return ( $lc_a > 0.5 );
 }
 
+sub badarray {
+  my $lc_a;
+  
+  $lc_a = @_;
+  return ( $lc_a < 0.5 );
+}
+

@@ -34,6 +34,13 @@ void process_version_query ( void )
       fflush(stdout);
       exit(0);
     }
+    
+    if ( chorebox_samestrg_c(chorebox_argv[lc_counto],"--version-id") )
+    {
+      printf("%s\n",THIS_PROGRAMS_VERSION);
+      fflush(stdout);
+      exit(0);
+    }
     lc_counto++;
   }
   return;

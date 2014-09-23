@@ -98,6 +98,7 @@ sub act_by_line {
     return;
   }
   
+  # Clear the logic stack.
   if ( $lc_a[1] eq "clearstack" )
   {
     @litstack = ();
@@ -105,6 +106,9 @@ sub act_by_line {
     return;
   }
   
+  # Creates a brand new array who's name is specified in the first
+  # argument and who's contents are all the *remaining* arguments.
+  # Do *not* include a colon at the end of the last argument, please.
   if ( $lc_a[1] eq "brandnew-array" )
   {
     my @lc2_a;
@@ -118,6 +122,33 @@ sub act_by_line {
       &report_array($lc2_b);
       return;
     }
+  }
+  
+  
+  # This next item creates a new array (named by the one recognized
+  # argument) which contains all the arguments that were passed to
+  # this "chorebox-configure" program.
+  #   One exception is made though. If the very first argument
+  # appears to be a "--srcdir" option, that argument is omitted.
+  # The reason is that this argument should be prepended to the
+  # argument list by the "configure" script, and therefore was probably
+  # present in the arguments passed to this program as a *result* of
+  # having been prepended by the calling "configure" script.
+  if ( $lc_a[1] eq "argv" )
+  {
+    &action__argv($lc_a[2]);
+    return;
+  }
+  
+  
+  # This next directives copies all items from the array named
+  # in the first argument onto the array named in the second
+  # argument - but while doing this copying, it filters out
+  # any items that would create redundancies.
+  if ( $lc_a[1] eq "redun" )
+  {
+    &action__redun($lc_a[2]);
+    return;
   }
   
   if ( $lc_a[1] eq "echo" )
