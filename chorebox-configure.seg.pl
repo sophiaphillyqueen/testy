@@ -184,7 +184,12 @@ sub try_process_argum {
 &autom("oldincludedir","/usr/include");
 
 # <-- docdir
-&autom("docdir",$valvar{"datarootdir"} . "/doc/" . $proj_info_s{"name"} . "-" . $proj_info_s{"vrsn"});
+# "super_docdir" added to list of directory variables so as to
+# provide a means to uniformly point to where *all* program
+# documentations go while still allowing individual packages
+# to have their directory therewithin.
+&autom("super_docdir",$valvar{"datarootdir"} . "/doc");
+&autom("docdir",$valvar{"super_docdir"} . "/" . $proj_info_s{"name"} . "-" . $proj_info_s{"vrsn"});
 &autom("infodir",$valvar{"datarootdir"} . "/info");
 &autom("htmldir",$valvar{"docdir"});
 &autom("dvidir",$valvar{"docdir"});
