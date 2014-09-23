@@ -106,6 +106,25 @@ sub act_by_line {
     return;
   }
   
+  
+  # Change a variable (named in the one recognized argument) to
+  # contain the dirname() result of it's former contents.
+  # (If you want to have the dirname()-result in a separate
+  # variable from the input contents, then precede this directive
+  # with a "setvar" directive.)
+  if ( $lc_a[1] eq "dirname" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    my $lc2_c;
+    ($lc2_a) = split(/:/,$lc_a[2]);
+    $lc2_b = $strgvars{$lc2_a};
+    $lc2_c = dirname($lc2_b);
+    $strgvars{$lc2_a} = $lc2_c;
+    system("echo","  Thought variable: " . $lc2_a . ": = " . $lc2_c . ":");
+    return;
+  }
+  
   # Creates a brand new array who's name is specified in the first
   # argument and who's contents are all the *remaining* arguments.
   # Do *not* include a colon at the end of the last argument, please.
