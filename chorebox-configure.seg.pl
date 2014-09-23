@@ -16,6 +16,9 @@
 
 # ########################
 
+use File::Basename;
+
+
 my @dir_vars_specfied = ();
 my %dir_vars_values = {};
 my %dir_vars_real = {};
@@ -81,6 +84,18 @@ sub try_process_argum {
   my $lc_optnom; # The name of the option
   my $lc_is_dirvaly;
   
+  
+  # Certain argument-types must be processed before all
+  # others to prevent them from getting mixed up with
+  # the others.
+  $truthiness = ( 1 > 2 );
+  if (!($truthiness)) { $truthiness =  &beginningst($_[0],"--devel_"); }
+  if ( $truthiness )
+  {
+    system("echo","Accepting Option: " . $_[0] . ":");
+    return;
+  }
+  
   # First, we do the basic inventory on basically what kind of
   # argument we are dealing with.
   ($lc_pre_equal,$lc_post_equal) = split(quotemeta("="),$_[0],2);
@@ -113,14 +128,6 @@ sub try_process_argum {
     @dir_vars_specfied = (@dir_vars_specfied,$lc_optnom);
     $dir_vars_values{$lc_optnom} = $lc_post_equal;
     $dir_vars_real{$lc_optnom} = ( 1 > 2 ); # Fictional until found ....
-    return;
-  }
-  
-  $truthiness = ( 1 > 2 );
-  if (!($truthiness)) { $truthiness =  &beginningst($_[0],"--devel_"); }
-  if ( $truthiness )
-  {
-    system("echo","Accepting Option: " . $_[0] . ":");
     return;
   }
   
@@ -207,6 +214,30 @@ sub try_process_argum {
 # important.
 &autom("farm_bindir",$valvar{"bindir"});
 &autom("farm_sbindir",$valvar{"sbindir"});
+
+
+
+
+
+# Now --- before we take another step we *need* to assure that
+# there are no *fictional* directory variables lingering around.
+{
+  my $lc_a;
+  
+  foreach $lc_a (@dir_vars_specfied)
+  {
+    if ( !($dir_vars_real{$lc_a}) )
+    {
+      die "\nUnfortunately, it appears as though \"" . $lc_a
+        . "\" is a fictional directory variable."
+        . "\nTherefore, we can not continue.\n\n";
+      ;
+    }
+  }
+}
+
+
+
 
 
 open DST, "| cat > Makefile.tmp";

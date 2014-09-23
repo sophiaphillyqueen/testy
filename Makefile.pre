@@ -46,6 +46,7 @@
 :label:version-without-moment:
 :apnvar:build-version:lit:-release
 :label:version-complete:
+:clearstack:
 
 :setvar:perlloc:qry:which perl
 
@@ -58,15 +59,28 @@
 
 :argv:configure-options:
 
+:brandnew-array:x:index.html:main.css
+:redun:x:htdocs:
+
 
 :-:
 :-:all: chorebox-configure chorebox-in
 :->:chmod 755 chorebox-configure
 
 :-:
-:-:install: all
+:-:install: all install-html
 :->:cp chorebox-configure "$(farm_bindir)/."
 :->:cp chorebox-in "$(bindir)/."
+
+:-:
+:-:install-html: all-html
+
+:-:
+:-:all-html:
+:foreach:htdocs:htdoc:
+	:*: $(srcdir)/htmldocs/
+	:echo:var:htdoc:
+:eachend:
 
 :-:
 :-:uninstall:
