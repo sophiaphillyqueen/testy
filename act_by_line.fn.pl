@@ -79,6 +79,12 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "ifdiff-to" )
+  {
+    &action__ifdiff_to($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "goto" )
   {
     &action__goto($lc_a[2]);
@@ -95,6 +101,12 @@ sub act_by_line {
     $lc2_b .= &meaning_of($lc2_a[1]);
     $strgvars{$lc2_a[0]} = $lc2_b;
     system("echo","  Thought variable: " . $lc2_a[0] . ": = " . $lc2_b . ":");
+    return;
+  }
+  
+  if ( $lc_a[1] eq "compare-version" )
+  {
+    &action__compare_version($lc_a[2]);
     return;
   }
   

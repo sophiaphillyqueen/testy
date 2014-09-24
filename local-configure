@@ -93,6 +93,9 @@ temporary--chorebox-in.pl
 sh "${origidir}/perldumpy.sh" "${origidir}/goodarray.fn.pl" \
 temporary--chorebox-in.pl
 
+sh "${origidir}/perldumpy.sh" "${origidir}/action__compare_version.fn.pl" \
+temporary--chorebox-in.pl
+
 
 if [ $native_conf_here = $say_yes ]; then
   echo BEFORE:

@@ -37,6 +37,14 @@ sub action__ifsame_to {
   then_goto_label($lc_a);
 }
 
+sub action__ifdiff_to {
+  my $lc_a;
+  
+  if ( $litstack[0] eq $litstack[1] ) { return; }
+  ($lc_a) = split(/:/,$_[0]);
+  then_goto_label($lc_a);
+}
+
 sub action__goto {
   my $lc_a;
   
@@ -178,7 +186,7 @@ sub action__redun {
 sub then_goto_label {
   my $lc_a;
   
-  $lc_a = $make_label{$_[0]};
+  $lc_a = &label_dest($_[0]);
   if ( $lc_a eq "" )
   {
     die "\nFictional label \"" . $_[0] . "\" referenced in line " . int($make_indx + 1.2)
@@ -187,6 +195,18 @@ sub then_goto_label {
   }
   system("echo","  Go to Label: " . $_[0] . ":");
   $make_indx = $lc_a;
+}
+
+
+# Interprets a label to a line number --- takes "special labels" into
+# account.
+sub label_dest {
+  my $lc_a;
+  my $lc_b;
+  $lc_a = $_[0];
+  if ( $lc_a eq "-" ) { return $make_indx; }
+  $lc_b = $make_label{$lc_a};
+  return $lc_b;
 }
 
 sub report_array {
