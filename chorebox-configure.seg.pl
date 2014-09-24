@@ -33,6 +33,8 @@ my %make_label; # The directory of all goto destination-lines by label
 my %proj_info_s;
 my %proj_info_l;
 
+my $err_mesg = "";
+
 
 my $truthiness; # Logic variable for acceptance or rejection of -certain- arguments
 

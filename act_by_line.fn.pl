@@ -110,6 +110,13 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "fail" ) { &action__fail; return; }
+  if ( $lc_a[1] eq "err" )
+  {
+    $err_mesg .= &captura($lc_a[2]);
+    return;
+  }
+  
   # Clear the logic stack.
   if ( $lc_a[1] eq "clearstack" )
   {
