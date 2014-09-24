@@ -153,6 +153,8 @@
 :->:echo temporary--c-compiler.txt >> git-ignore-tmp
 :->:echo temporary--chorebox-configure >> git-ignore-tmp
 :->:echo temporary--extra-options-compile.txt >> git-ignore-tmp
+:->:echo temporary--chorebox-in >> git-ignore-tmp
+:->:echo temporary--chorebox-in.pl >> git-ignore-tmp
 ::
 :->:mv git-ignore-tmp .gitignore
 
