@@ -34,7 +34,7 @@
 :label:cdbg-off:
 :clearstack:
 
-# Now we generate the version-ID:
+::# Now we generate the version-ID:
 :setvar:build-version:info:vrsn:
 :setvar:build-moment:dqry:date +%Y-%m%d-%H%M%S
 :stack:info:rels:
@@ -55,7 +55,9 @@
 :brandnew-array:choreobx-configure-parts:chorebox-configure.seg.pl:autom.fn.pl:apnd_shrunk_argument.fn.pl:goodarray.fn.pl:act_by_line.fn.pl:action__varfromopt.fn.pl:action__stack.fn.pl:action__foreach.fn.pl:action__compare_version.fn.pl
 
 
-:brandnew-array:lib--chorebox--c:vars:chorebox_mlc:chorebox_apend_string:chorebox_colsep_to_list:chorebox_free_str_list:chorebox_join_string:chorebox_str_lis_dump:chorebox_command_line:chorebox_exec_b:chorebox_exec_a:chorebox_getcwd:chorebox_run_from_path:chorebox_check_cmd_file:chorebox_str_lis_apnd:chorebx_free_dyn_string:chorebox_samestrg_c
+:brandnew-array:lib--chorebox--chorebox-in--c:vars:chorebox_mlc:chorebox_apend_string:chorebox_colsep_to_list:chorebox_free_str_list:chorebox_join_string:chorebox_str_lis_dump:chorebox_command_line:chorebox_exec_b:chorebox_exec_a:chorebox_getcwd:chorebox_run_from_path:chorebox_check_cmd_file:chorebox_str_lis_apnd:chorebx_free_dyn_string:chorebox_samestrg_c
+
+:redun:lib--chorebox--chorebox-in--c:lib--chorebox--c:
 
 :argv:configure-options:
 
@@ -64,16 +66,49 @@
 
 
 :-:
-:-:all: chorebox-configure chorebox-in
+:-:all: chorebox-configure chorebox-in libchorebox.a
 :->:chmod 755 chorebox-configure
 
 :-:
 :-:install: all install-html
 :->:cp chorebox-configure "$(farm_bindir)/."
 :->:cp chorebox-in "$(bindir)/."
+:->:mkdir -p "$(libdir)"
+:->:cp libchorebox.a "$(libdir)/."
+:->:mkdir -p "$(includedir)"
+:->:cp "$(srcdir)/libchorebox/inc/chorebox.h" "$(includedir)/."
+
+:-:
+:-:libchorebox.a:
+:foreach:lib--chorebox--c:chor-c:
+  :*: lib_static-chorebox/
+  :echo:var:chor-c:
+  :*:.o
+:eachend:
+:->:ar -cvq libchorebox.a
+:foreach:lib--chorebox--c:chor-c:
+  :*: "lib_static-chorebox/
+  :echo:var:chor-c:
+  :*:.o"
+:eachend:
 
 :-:
 :-:install-html: all-html
+:foreach:htdocs:htdoc:
+	:setvar:lc01:var:htdoc:
+	:dirname:lc01:
+	::
+	:->:mkdir -p "$(docdir)/
+	:echo:var:lc01:
+	:*:"
+	::
+	:->:cp "$(srcdir)/htmldocs/
+	:echo:var:htdoc:
+	:*:" "$(docdir)/
+	:echo:var:lc01:
+	:*:/."
+:eachend:
+
 
 :-:
 :-:all-html:
@@ -96,6 +131,7 @@
 :->:rm -rf chorebox-in
 :->:rm -rf chorebox-configure
 :->:rm -rf chorebox-configure-tmp
+:->:rm -rf libchorebox.a
 
 
 :-:
@@ -143,7 +179,7 @@
 	:echo:var:chore-c:
 	:*:.o
 :eachend:
-:foreach:lib--chorebox--c:chore-c:
+:foreach:lib--chorebox--chorebox-in--c:chore-c:
 	:*: lib_static-chorebox/
 	:echo:var:chore-c:
 	:*:.o
@@ -157,7 +193,7 @@
 	:echo:var:chore-c:
 	:*:.o
 :eachend:
-:foreach:lib--chorebox--c:chore-c:
+:foreach:lib--chorebox--chorebox-in--c:chore-c:
 	:*: lib_static-chorebox/
 	:echo:var:chore-c:
 	:*:.o
