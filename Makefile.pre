@@ -67,6 +67,7 @@
 
 :-:
 :-:all: chorebox-configure chorebox-in libchorebox.a
+:*: .gitignore
 :->:chmod 755 chorebox-configure
 
 :-:
@@ -132,6 +133,28 @@
 :->:rm -rf chorebox-configure
 :->:rm -rf chorebox-configure-tmp
 :->:rm -rf libchorebox.a
+
+:-:
+:-:.gitignore: Makefile
+:->:rm -rf git-ignore-tmp
+:->:echo git-ignore-tmp > git-ignore-tmp
+:->:echo Makefile >> git-ignore-tmp
+:->:echo Makefile.tmp >> git-ignore-tmp
+::
+:->:echo lib_static-chorebox >> git-ignore-tmp
+:->:echo chorebox-in-obj >> git-ignore-tmp
+:->:echo generated >> git-ignore-tmp
+:->:echo chorebox-in >> git-ignore-tmp
+:->:echo chorebox-configure >> git-ignore-tmp
+:->:echo chorebox-configure-tmp >> git-ignore-tmp
+:->:echo libchorebox.a >> git-ignore-tmp
+::
+::->:echo "temporary--*" >> git-ignore-tmp
+:->:echo temporary--c-compiler.txt >> git-ignore-tmp
+:->:echo temporary--chorebox-configure >> git-ignore-tmp
+:->:echo temporary--extra-options-compile.txt >> git-ignore-tmp
+::
+:->:mv git-ignore-tmp .gitignore
 
 
 :-:
@@ -282,4 +305,8 @@
 :->:mv chorebox-configure-tmp chorebox-configure
 temporary--chorebox-configure
 
+
+::# Let us end the Makefile pretty.
+:-:
+:-:
 

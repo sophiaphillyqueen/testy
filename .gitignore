@@ -1,1 +1,13 @@
+git-ignore-tmp
 Makefile
+Makefile.tmp
+lib_static-chorebox
+chorebox-in-obj
+generated
+chorebox-in
+chorebox-configure
+chorebox-configure-tmp
+libchorebox.a
+temporary--c-compiler.txt
+temporary--chorebox-configure
+temporary--extra-options-compile.txt
