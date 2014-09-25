@@ -151,8 +151,20 @@ sub try_process_argum {
   my $lc_line;
   my $lc_xlin;
   my @lc_segs;
+  my $lc_infofile;
+  
   $lc_cmd = "cat";
-  &apnd_shrunk_argument($lc_cmd,$valvar{"srcdir"} . "/proj-info.txt");
+  $lc_infofile = $valvar{"srcdir"} . "/proj-info.txt";
+  
+  if ( !(-f $lc_infofile) )
+  {
+    die "\nFATAL ERROR: Can not find file:"
+      . "\n  " . $lc_infofile . ":"
+      . "\n\n"
+    ;
+  }
+  
+  &apnd_shrunk_argument($lc_cmd,$lc_infofile);
   $lc_cont = `$lc_cmd`;
   @lc_lins = split(/\n/,$lc_cont);
   foreach $lc_line (@lc_lins)
@@ -162,6 +174,50 @@ sub try_process_argum {
     $proj_info_s{$lc_segs[1]} = $lc_segs[2];
     @lc_segs = split(/:/,$lc_xlin,3);
     $proj_info_l{$lc_segs[1]} = $lc_segs[2];
+  }
+  
+  
+  
+  if ( $proj_info_l{"name"} eq "" )
+  {
+    die "\nFATAL ERROR: Missing crucial field in file:"
+      . "\n  " . $lc_infofile . ":\n"
+      . "We really need the field \"name\""
+      . " to specify the symbolic name of the project."
+      . "\n\n"
+    ;
+  }
+  
+  if ( $proj_info_l{"vrsn"} eq "" )
+  {
+    die "\nFATAL ERROR: Missing crucial field in file:"
+      . "\n  " . $lc_infofile . ":\n"
+      . "We really need the field \"vrsn\""
+      . " to specify the progressive version-code."
+      . "\n(FYI: The progressiver version-code is just numbers separated"
+      . " by periods.)"
+      . "\n\n"
+    ;
+  }  
+  
+  if ( $proj_info_l{"year"} eq "" )
+  {
+    die "\nFATAL ERROR: Missing crucial field in file:"
+      . "\n  " . $lc_infofile . ":\n"
+      . "We really need the field \"year\""
+      . " to specify the copyright year."
+      . "\n\n"
+    ;
+  }
+  
+  if ( $proj_info_l{"holder"} eq "" )
+  {
+    die "\nFATAL ERROR: Missing crucial field in file:"
+      . "\n  " . $lc_infofile . ":\n"
+      . "We really need the field \"holder\""
+      . " to specify the copyright holder(s)."
+      . "\n\n"
+    ;
   }
 }
 
