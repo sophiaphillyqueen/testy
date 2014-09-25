@@ -52,6 +52,9 @@ my @frochlist = (); # List of yet-to-be-shifted elements
 my $frochvari = ""; # Name of variable the loop writes to:
 my $frochfont = ""; # Name of array the loop writes from (stored only for thought output)
 
+my $recipe_file; # The name of the current recipe file
+# Starts with Makefile.pre in the $(srcdir) directory.
+
 
 foreach $argum (@ARGV)
 {
@@ -256,7 +259,8 @@ open DST, "| cat > Makefile.tmp";
   my $lc_cont;
   
   $lc_cmd = "cat";
-  &apnd_shrunk_argument($lc_cmd, $valvar{"srcdir"} . "/Makefile.pre");
+  $recipe_file = $valvar{"srcdir"} . "/Makefile.pre";
+  &apnd_shrunk_argument($lc_cmd, $recipe_file);
   $lc_cont = `$lc_cmd`;
   @make_lines = split(/\n/,$lc_cont);
   $make_length = @make_lines;

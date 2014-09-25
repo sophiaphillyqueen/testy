@@ -38,6 +38,13 @@ sub action__foreach {
   
   # And finally, we put the variables where they belong.
   $lc_list_ref = $strarays{$frochfont};
+  if ( ref($lc_list_ref) ne "ARRAY" )
+  {
+    die "\nFATAL ERROR: " . $recipe_file . ": Line: " . int($make_indx + 1.2)
+      . ":\n  Uncreated array referenced: " . $frochfont . ":"
+      . "\n\n" . $make_lines[$make_indx] . "\n\n"
+    ;
+  }
   @frochlist = (@$lc_list_ref);
   if ( !(&goodarray(@frochlist)) )
   {
