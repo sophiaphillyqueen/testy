@@ -50,6 +50,30 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "s" )
+  {
+    my $lc2_a;
+    ($lc2_a) = split(/:/,$lc_a[2]);
+    while ( $lc2_a > 0.5 )
+    {
+      $adendia .= " ";
+      $lc2_a = int($lc2_a - 0.8);
+    }
+    return;
+  }
+  
+  if ( $lc_a[1] eq "n" )
+  {
+    my $lc2_a;
+    ($lc2_a) = split(/:/,$lc_a[2]);
+    while ( $lc2_a > 0.5 )
+    {
+      $adendia .= "\n";
+      $lc2_a = int($lc2_a - 0.8);
+    }
+    return;
+  }
+  
   if ( $lc_a[1] eq "setvar" )
   {
     my @lc2_a;
