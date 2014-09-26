@@ -104,6 +104,41 @@ sub meaning_of {
     return $proj_info_l{$lc_b[0]};
   }
   
+  if ( $lc_a[0] eq "shl" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    my $lc2_c;
+    
+    $lc2_a = &meaning_of($lc_a[1]);
+    $lc2_b = "";
+    while ( $lc2_a ne "" )
+    {
+      $lc2_c = chop($lc2_a);
+      if ( $lc2_c eq "'" ) { $lc2_c = "'\"'\"'"; }
+      $lc2_b = $lc2_c . $lc2_b;
+    }
+    return $lc2_b;
+  }
+  
+  if ( $lc_a[0] eq "gscp" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    my $lc2_c;
+    
+    $lc2_a = &meaning_of($lc_a[1]);
+    $lc2_b = "";
+    while ( $lc2_a ne "" )
+    {
+      $lc2_c = chop($lc2_a);
+      if ( $lc2_c eq "#" ) { $lc2_c = "\\#"; }
+      if ( $lc2_c eq "!" ) { $lc2_c = "\\!"; }
+      $lc2_b = $lc2_c . $lc2_b;
+    }
+    return $lc2_b;
+  }
+  
   die "\nUnknown complex string-type: \""
     . $lc_a[0] . "\" in line " . int($make_indx + 1.2)
     . ":\n  " . $make_lines[$make_indx] . "\n\n"
