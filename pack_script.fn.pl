@@ -46,5 +46,77 @@
 #
 # So here goes ...
 #
-# RSSA[0]: The name of the array file.
+# RSSA[0]: The name of the script file:
+#
+# RSSA[1]: => The line-by-line contents of the script file
+#
+# RSSA[2]: => The array of *location-labels* in the script file
+#
+# RSSA[3]: Your location in the execution of the script file
+#
+# RSSA[4]: => The script's hash of string-variables
+#
+# RSSA[5]: => The script's hash of array-variables
+#
+# RSSA[6]: => The script's logic stack
 # ########################
+
+sub pack_script {
+  my $lc_husk; # The script-session reference
+  my $lc_rssa_1;
+  my $lc_rssa_2;
+  my $lc_rssa_4;
+  my $lc_rssa_5;
+  my $lc_rssa_6;
+  
+  $lc_rssa_1 = \@make_lines;
+  $lc_rssa_2 = \%make_label;
+  $lc_rssa_4 = \%strgvars;
+  $lc_rssa_5 = \%strarays;
+  $lc_rssa_6 = \@litstack;
+  
+  $lc_husk = [$recipe_file
+    , $lc_rssa_1 , $lc_rssa_2 , $make_indx
+    , $lc_rssa_4 , $lc_rssa_5 , $lc_rssa_6
+  ];
+  
+  return $lc_husk;
+}
+
+
+sub unpack_script {
+  my $lc_husk; # The script-session array
+  my @lc_hsk; # $lc_husk past reference
+  my $lc_ole_recipe;
+  my $lc_ole_place;
+  my $lc_problemo;
+  my $lc_rssa_1;
+  my $lc_rssa_2;
+  my $lc_rssa_4;
+  my $lc_rssa_5;
+  my $lc_rssa_6;
+  
+  $lc_ole_recipe = $recipe_file;
+  $lc_ole_place = $make_indx;
+  
+  $lc_husk = $_[0];
+  
+  if ( ref($lc_husk) ne "ARRAY" )
+  {
+    die "\nInvalid script-session reference provided:\n    "
+      . $lc_ole_recipe . ": line " . $make_indx . ":\n\n";
+    ;
+  }
+  
+  @lc_hsk = @$lc_husk;
+  
+  $lc_problemo = ( 1 > 2 );
+  if ( ref($lc_hsk[1]) ne "ARRAY" ) { $lc_problemo = ( 2 > 1 ); }
+  if ( ref($lc_hsk[2]) ne "HASH" ) { $lc_problemo = ( 2 > 1 ); }
+  if ( ref($lc_hsk[4]) ne "HASH" ) { $lc_problemo = ( 2 > 1 ); }
+  if ( ref($lc_hsk[5]) ne "HASH" ) { $lc_problemo = ( 2 > 1 ); }
+  if ( ref($lc_hsk[6]) ne "ARRAY" ) { $lc_problemo = ( 2 > 1 ); }
+  
+  $recipe_file = $lc_hsk[0];
+}
+
