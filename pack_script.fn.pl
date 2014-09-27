@@ -68,16 +68,19 @@ sub pack_script {
   my $lc_rssa_4;
   my $lc_rssa_5;
   my $lc_rssa_6;
+  my $lc_rssa_7;
   
   $lc_rssa_1 = \@make_lines;
   $lc_rssa_2 = \%make_label;
   $lc_rssa_4 = \%strgvars;
   $lc_rssa_5 = \%strarays;
   $lc_rssa_6 = \@litstack;
+  $lc_rssa_7 = \@used_scrips;
   
   $lc_husk = [$recipe_file
     , $lc_rssa_1 , $lc_rssa_2 , $make_indx
     , $lc_rssa_4 , $lc_rssa_5 , $lc_rssa_6
+    , $lc_rssa_7
   ];
   
   return $lc_husk;
@@ -90,11 +93,13 @@ sub unpack_script {
   my $lc_ole_recipe;
   my $lc_ole_place;
   my $lc_problemo;
+  my $lc_complaint;
   my $lc_rssa_1;
   my $lc_rssa_2;
   my $lc_rssa_4;
   my $lc_rssa_5;
   my $lc_rssa_6;
+  my $lc_rssa_7;
   
   $lc_ole_recipe = $recipe_file;
   $lc_ole_place = $make_indx;
@@ -104,11 +109,16 @@ sub unpack_script {
   if ( ref($lc_husk) ne "ARRAY" )
   {
     die "\nInvalid script-session reference provided:\n    "
-      . $lc_ole_recipe . ": line " . $make_indx . ":\n\n";
+      . $lc_ole_recipe . ": line " . $make_indx . ":\n"
+      . "    It isn't even a reference to an array!!!\n\n";
     ;
   }
   
   @lc_hsk = @$lc_husk;
+  
+  $lc_complaint = "\nInvalid script-session reference provided:\n    "
+      . $lc_ole_recipe . ": line " . $make_indx . ":\n"
+  ;
   
   $lc_problemo = ( 1 > 2 );
   if ( ref($lc_hsk[1]) ne "ARRAY" ) { $lc_problemo = ( 2 > 1 ); }
@@ -116,7 +126,59 @@ sub unpack_script {
   if ( ref($lc_hsk[4]) ne "HASH" ) { $lc_problemo = ( 2 > 1 ); }
   if ( ref($lc_hsk[5]) ne "HASH" ) { $lc_problemo = ( 2 > 1 ); }
   if ( ref($lc_hsk[6]) ne "ARRAY" ) { $lc_problemo = ( 2 > 1 ); }
+  if ( ref($lc_hsk[7]) ne "ARRAY" ) { $lc_problemo = ( 2 > 1 ); }
+  
+  if ( $lc_problemo ) { die $lc_complaint . "\n"; }
   
   $recipe_file = $lc_hsk[0];
+  $lc_rssa_1 = $lc_hsk[1];
+  $lc_rssa_2 = $lc_hsk[2];
+  $make_indx = $lc_hsk[3];
+  $lc_rssa_4 = $lc_hsk[4];
+  $lc_rssa_5 = $lc_hsk[5];
+  $lc_rssa_6 = $lc_hsk[6];
+  $lc_rssa_7 = $lc_hsk[7];
+  
+  @make_lines = @$lc_rssa_1;
+  %make_label = %$lc_rssa_2;
+  %strgvars = %$lc_rssa_4;
+  %strarays = %$lc_rssa_5;
+  @litstack = @$lc_rssa_6;
+  @used_scrips = @$lc_rssa_7;
+  
+  $make_length = @make_lines;
 }
+
+
+# Bear in mind the return_to_higher_script() function returns to the
+# calling script if the current script is *not* the original Makefile
+# recipe script - but it does *not* terminate the configuration if the
+# current script *is* the original Makefile recipe script. Originally,
+# the design-plan of this function was to have it *indirectly* do so
+# by going to the end-of-the-script in that event - but then it was
+# concluded that it would be more flexible to let the *calling*
+# function do this if it wished --- thereby giving it the option not
+# to if it wished not to.
+sub return_to_higher_script {
+  my $lc_tool_script;
+  my $lc_calling_script;
+  
+  # First thing we make clear that there is nothing to do if the
+  # present script is the original Makefile recipe.
+  if ( &badarray(@over_scripts) ) { return; }
+  
+  # Next thing, we pack the present script:
+  $lc_tool_script = &pack_script;
+  
+  # Now we find our reference to the calling script.
+  $lc_calling_script = pop(@over_scripts);
+  
+  # And now we can switch back over to the calling script.
+  &unpack_script($lc_calling_script);
+  
+  # Of course, before returning, we must record the finishing
+  # state of the tool script.
+  @used_scrips = ( $lc_tool_script, @used_scrips );
+}
+
 

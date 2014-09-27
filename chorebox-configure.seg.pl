@@ -33,6 +33,16 @@ my %make_label; # The directory of all goto destination-lines by label
 my %proj_info_s;
 my %proj_info_l;
 
+my @used_scrips;
+# The list of all scripts previously invoked by the current one.
+# The array begins with the most recently invoked one - that is
+# new entries are added at the *beginning* of the list.
+# The list continues to accumulate until it is deliberately cleared.
+
+my @over_scripts = ();
+# The stack of all scripts to return to upon completion of the
+# current one.
+
 my $err_mesg = "";
 
 
@@ -308,49 +318,64 @@ sub try_process_argum {
 
 open DST, "| cat > Makefile.tmp";
 
-# Now comes the part where we will load the Makefile recipe
-# to active memory:
-{
+
+
+
+&load_script_file ( $valvar{"srcdir"} . "/Makefile.pre" );
+
+sub load_script_file {
   my $lc_cmd;
   my $lc_cont;
-  
-  $lc_cmd = "cat";
-  $recipe_file = $valvar{"srcdir"} . "/Makefile.pre";
-  &apnd_shrunk_argument($lc_cmd, $recipe_file);
-  $lc_cont = `$lc_cmd`;
-  @make_lines = split(/\n/,$lc_cont);
-  $make_length = @make_lines;
-}
-
-# And we look for the list of place-labels:
-# Also - all the carry-over comments are to be displayed at this
-# point as well. That is, comment-lines that begin with ":#:".
-# This is done at the same time as the goto labels so that the copyright
-# notice can appear at the *beginning* of the Makefile rather than
-# *after* the Makefile variables are laid out. Comments that are meant
-# to be interspersed throughout the Makefile should be displayed as
-# ordinary Makefile text who's lines begin with the "#". And comments
-# that are only needed in the recipe file should begin with two
-# consecutive colons at the beginning of the line.
-$make_indx = 0;
-%make_label = {};
-while ( $make_indx < ( $make_length - 0.2 ) )
-{
   my @lc_a;
   my @lc_b;
-  @lc_a = split(/:/,$make_lines[$make_indx],3);
-  @lc_b = split(/:/,$lc_a[2]);
-  if ( $lc_a[1] eq "label" )
+  
+  # Now comes the part where we will load the Makefile recipe
+  # to active memory:
   {
-    system("echo","Label marked: " . $lc_b[0] . ": " . $make_indx . ":");
-    $make_label{$lc_b[0]} = $make_indx;
+    
+    $lc_cmd = "cat";
+    $recipe_file = $_[0];
+    &apnd_shrunk_argument($lc_cmd, $recipe_file);
+    $lc_cont = `$lc_cmd`;
+    @make_lines = split(/\n/,$lc_cont);
+    $make_length = @make_lines;
   }
-  if ( $lc_a[1] eq "#" )
+  
+  # And we look for the list of place-labels:
+  # Also - all the carry-over comments are to be displayed at this
+  # point as well. That is, comment-lines that begin with ":#:".
+  # This is done at the same time as the goto labels so that the copyright
+  # notice can appear at the *beginning* of the Makefile rather than
+  # *after* the Makefile variables are laid out. Comments that are meant
+  # to be interspersed throughout the Makefile should be displayed as
+  # ordinary Makefile text who's lines begin with the "#". And comments
+  # that are only needed in the recipe file should begin with two
+  # consecutive colons at the beginning of the line.
+  $make_indx = 0;
+  %make_label = {};
+  while ( $make_indx < ( $make_length - 0.2 ) )
   {
-    print DST "#" . $lc_a[2] . "\n";
+    @lc_a = split(/:/,$make_lines[$make_indx],3);
+    @lc_b = split(/:/,$lc_a[2]);
+    if ( $lc_a[1] eq "label" )
+    {
+      system("echo","Label marked: " . $lc_b[0] . ": " . $make_indx . ":");
+      $make_label{$lc_b[0]} = $make_indx;
+    }
+    if ( $lc_a[1] eq "#" )
+    {
+      print DST "#" . $lc_a[2] . "\n";
+    }
+    $make_indx = int($make_indx + 1.2);
   }
-  $make_indx = int($make_indx + 1.2);
+  
+  @used_scrips = ();
+  $make_indx = 0;
+  
 }
+
+
+
 
 
 # Now we output all the variables we need:
@@ -365,8 +390,7 @@ print DST "\n";
 
 
 # And we now do the main looping through the recipe ....
-$make_indx = 0;
-while ( $make_indx < ( $make_length - 0.2 ) )
+while ( $make_indx < ( $make_length - 0.5 ) )
 {
   $adendia = "";
   &act_by_line($make_lines[$make_indx]);
@@ -374,6 +398,12 @@ while ( $make_indx < ( $make_length - 0.2 ) )
   {
     print DST $adendia;
   }
+  
+  
+  # The following litany is added to assure that
+  # called scripts end by returning to the parent
+  # one, rather than ending the config.
+  if ( $make_indx < ( $make_length - 1.5 ) ) { &return_to_higher_script; }
   
   $make_indx = int($make_indx + 1.2);
 }
