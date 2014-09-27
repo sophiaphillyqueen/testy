@@ -69,13 +69,21 @@ sub pack_script {
   my $lc_rssa_5;
   my $lc_rssa_6;
   my $lc_rssa_7;
+  my %lc_ossa_2;
+  my %lc_ossa_4;
+  my %lc_ossa_5;
   
-  $lc_rssa_1 = \@make_lines;
-  $lc_rssa_2 = \%make_label;
-  $lc_rssa_4 = \%strgvars;
-  $lc_rssa_5 = \%strarays;
-  $lc_rssa_6 = \@litstack;
-  $lc_rssa_7 = \@used_scrips;
+  
+  %lc_ossa_2 = %make_label;
+  %lc_ossa_4 = %strgvars;
+  %lc_ossa_5 = %strarays;
+  
+  $lc_rssa_1 = [@make_lines];
+  $lc_rssa_2 = \%lc_ossa_2;
+  $lc_rssa_4 = \%lc_ossa_4;
+  $lc_rssa_5 = \%lc_ossa_5;
+  $lc_rssa_6 = [@litstack];
+  $lc_rssa_7 = [@used_scrips];
   
   $lc_husk = [$recipe_file
     , $lc_rssa_1 , $lc_rssa_2 , $make_indx
@@ -163,6 +171,7 @@ sub return_to_higher_script {
   my $lc_tool_script;
   my $lc_calling_script;
   
+  
   # First thing we make clear that there is nothing to do if the
   # present script is the original Makefile recipe.
   if ( &badarray(@over_scripts) ) { return; }
@@ -179,6 +188,7 @@ sub return_to_higher_script {
   # Of course, before returning, we must record the finishing
   # state of the tool script.
   @used_scrips = ( $lc_tool_script, @used_scrips );
+  
 }
 
 

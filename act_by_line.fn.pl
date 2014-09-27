@@ -234,6 +234,20 @@ sub act_by_line {
     return;
   }
   
+  # This is the directive that invokes another script:
+  if ( $lc_a[1] eq "run" )
+  {
+    my $lc2_old;
+    my $lc2_new_file;
+    
+    $lc2_new_file = &meaning_of(@lc_a[2]);
+    $lc2_old = &pack_script;
+    @over_scripts = (@over_scripts,$lc2_old);
+    &load_script_file($lc2_new_file);
+    &act_by_line;
+    return;
+  }
+  
   
   die "\nUnknown Makefile Recipe Command in line " . int($make_indx + 1.2)
     . ":\n  " . $_[0] . "\n\n";
