@@ -19,6 +19,7 @@
 sub act_by_line {
   my @lc_a;
   my $lc_tmcm;
+  my $lc_this;
   @lc_a = split(/:/,$_[0],3);
   
   if ( $lc_a[1] eq "" ) { return; }
@@ -171,7 +172,10 @@ sub act_by_line {
   # Creates a brand new array who's name is specified in the first
   # argument and who's contents are all the *remaining* arguments.
   # Do *not* include a colon at the end of the last argument, please.
-  if ( $lc_a[1] eq "brandnew-array" )
+  $lc_this = ( 1 > 2 );
+  if ( $lc_a[1] eq "brandnew-array" ) { $lc_this = ( 2 > 1 ); }
+  if ( $lc_a[1] eq "bna" ) { $lc_this = ( 2 > 1 ); }
+  if ( $lc_this )
   {
     my @lc2_a;
     my $lc2_b;
