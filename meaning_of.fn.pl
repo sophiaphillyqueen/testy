@@ -36,6 +36,12 @@ sub meaning_of {
     
     $lc2_a = $lc_a[1];
     $lc2_b = `$lc2_a`; chomp($lc2_b);
+    if ( $lc2_b eq "" )
+    {
+      die "\nFATAL ERROR:\n  Empty result for the following query command:\n  %"
+        . $lc2_a . "\n\n";
+      ;
+    }
     return $lc2_b;
   }
   
@@ -53,6 +59,12 @@ sub meaning_of {
     
     $lc2_a = $lc_a[1];
     $lc2_b = `$lc2_a`; chomp($lc2_b);
+    if ( $lc2_b eq "" )
+    {
+      die "\nFATAL ERROR:\n  Empty result for the following query command:\n  %"
+        . $lc2_a . "\n\n";
+      ;
+    }
     return $lc2_b;
   }
   
