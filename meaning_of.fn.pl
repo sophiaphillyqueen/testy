@@ -29,6 +29,18 @@ sub meaning_of {
     return $strgvars{$lc_b[0]};
   }
   
+  # "flqry" is just like "dqry", except that it will not cause
+  # a fatal-error if the output is empty.
+  if ( $lc_a[0] eq "flqry" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    
+    $lc2_a = $lc_a[1];
+    $lc2_b = `$lc2_a`; chomp($lc2_b);
+    return $lc2_b;
+  }
+  
   if ( $lc_a[0] eq "qry" )
   {
     my $lc2_a;
