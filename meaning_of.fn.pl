@@ -29,6 +29,11 @@ sub meaning_of {
     return $strgvars{$lc_b[0]};
   }
   
+  if ( $lc_a[0] eq "par" )
+  {
+    return &meaning__of_parent($lc_a[1]);
+  }
+  
   
   # "varqry" does a current-system query command based on a variable with
   # one goto target if the output has content and another if the output
@@ -138,4 +143,39 @@ sub meaning_of {
     . ":\n  " . $make_lines[$make_indx] . "\n\n"
   ;
 }
+
+
+
+sub meaning__of_parent {
+  my $lc_par_level;
+  my $lc_par_vnom;
+  my $lc_each_ancestor;
+  my @lc_rev_parent;
+  my $lc_many_parent;
+  
+  ($lc_par_level,$lc_par_vnom) = split(/:/,$_[0]);
+  
+  # Generate reverse parent stack:
+  @lc_rev_parent = ();
+  foreach $lc_each_ancestor (@over_scripts)
+  {
+    @lc_rev_parent = ($lc_each_ancestor,@lc_rev_parent);
+  }
+  # And determine it's size:
+  $lc_many_parent = @lc_rev_parent;
+  if ( $lc_par_level > ( $lc_many_parent + 0.5 ) )
+  {
+    die "\n"
+      . "Requested ancestor " . $lc_par_level . " where only " . $lc_many_parent
+      . "are available.\n"
+      . "This mistake is done here: \""
+      . $recipe_file . "\" in line " . int($make_indx + 1.2)
+      . ":\n  " . $make_lines[$make_indx] . "\n\n"
+    ;
+  }
+  $lc_par_level = int($lc_par_level - 0.8);
+  if ( $lc_par_level < 0 ) { $lc_par_level = 0; }
+  return &var_from_packing($lc_rev_parent[$lc_par_level],$lc_par_vnom);
+}
+
 

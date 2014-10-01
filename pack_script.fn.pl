@@ -59,6 +59,8 @@
 # RSSA[5]: => The script's hash of array-variables
 #
 # RSSA[6]: => The script's logic stack
+#
+# RSSA[7]: => Scripts previously invoked by this script:
 # ########################
 
 sub pack_script {
@@ -190,5 +192,40 @@ sub return_to_higher_script {
   @used_scrips = ( $lc_tool_script, @used_scrips );
   
 }
+
+sub var_from_packing {
+  my $lc_a;
+  my @lc_b;
+  my $lc_c;
+  my %lc_d;
+  
+  $lc_a = $_[0];
+  @lc_b = @$lc_a;
+  $lc_c = $lc_b[4];
+  %lc_d = %$lc_c;
+  return $lc_d{$_[1]};
+}
+
+sub array_from_packing {
+  my $lc_a;
+  my @lc_b;
+  my $lc_c;
+  my %lc_d;
+  my $lc_e;
+  my @lc_f;
+  
+  $lc_a = $_[0];
+  @lc_b = @$lc_a;
+  $lc_c = $lc_b[5];
+  %lc_d = %$lc_c;
+  $lc_e = $lc_d{$_[1]};
+  @lc_f = ();
+  if ( ref($lc_e) eq "ARRAY" )
+  {
+    @lc_f = @$lc_e;
+  }
+  return @lc_f;
+}
+
 
 
