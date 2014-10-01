@@ -52,7 +52,7 @@
 
 :brandnew-array:chorebox-in-src--c:autodetect_home_bin_dir:own_this_dir:if_not_specified:specified_var_option:show_usage_error:main
 
-:brandnew-array:choreobx-configure-parts:chorebox-configure.seg.pl:autom.fn.pl:apnd_shrunk_argument.fn.pl:goodarray.fn.pl:act_by_line.fn.pl:action__varfromopt.fn.pl:action__stack.fn.pl:action__foreach.fn.pl:action__compare_version.fn.pl:action__fail.fn.pl:pack_script.fn.pl:meaning_of.fn.pl
+:brandnew-array:choreobx-configure-parts:chorebox-configure.seg.pl:autom.fn.pl:apnd_shrunk_argument.fn.pl:goodarray.fn.pl:act_by_line.fn.pl:action__varfromopt.fn.pl:action__stack.fn.pl:action__foreach.fn.pl:action__compare_version.fn.pl:action__fail.fn.pl:pack_script.fn.pl:meaning_of.fn.pl:action__qry_var.fn.pl
 
 
 :brandnew-array:lib--chorebox--chorebox-in--c:vars:chorebox_mlc:chorebox_apend_string:chorebox_colsep_to_list:chorebox_free_str_list:chorebox_join_string:chorebox_str_lis_dump:chorebox_command_line:chorebox_exec_b:chorebox_exec_a:chorebox_getcwd:chorebox_run_from_path:chorebox_check_cmd_file:chorebox_str_lis_apnd:chorebx_free_dyn_string:chorebox_samestrg_c

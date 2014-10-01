@@ -98,6 +98,12 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "qry-l" )
+  {
+    &action__qry_l($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "ifsame-to" )
   {
     &action__ifsame_to($lc_a[2]);

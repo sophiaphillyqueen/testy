@@ -29,6 +29,12 @@ sub meaning_of {
     return $strgvars{$lc_b[0]};
   }
   
+  
+  # "varqry" does a current-system query command based on a variable with
+  # one goto target if the output has content and another if the output
+  # is empty.
+  # :varqry:<source>:<dest>:<goto-if-empty>:<goto-if-full>:
+  
   # "flqry" is just like "dqry", except that it will not cause
   # a fatal-error if the output is empty.
   if ( $lc_a[0] eq "flqry" )
