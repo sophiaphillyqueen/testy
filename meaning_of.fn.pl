@@ -21,7 +21,14 @@ sub meaning_of {
   my @lc_b;
   
   @lc_a = split(/:/,$_[0],2);
-  if ( $lc_a[0] eq "lit" ) { return $lc_a[1]; }
+  
+  if ( $lc_a[0] eq "l" ) { return $lc_a[1]; }
+  
+  if ( $lc_a[0] eq "lit" )
+  {
+    &devel_err_aa("\"lit\" string-type has been re-named to \"l\".");
+    return $lc_a[1];
+  }
   
   if ( $lc_a[0] eq "var" )
   {
@@ -137,6 +144,13 @@ sub meaning_of {
     }
     return $lc2_b;
   }
+  
+  if ( $lc_a[0] eq "perl-l" ) { return &$r__perl_l_exe($lc_a[1]); }
+  if ( $lc_a[0] eq "perl-i" ) { return &$r__perl_i_exe($lc_a[1]); }
+  if ( $lc_a[0] eq "bin-l" ) { return &$r__bin_l_exe($lc_a[1]); }
+  if ( $lc_a[0] eq "bin-i" ) { return &$r__bin_i_exe($lc_a[1]); }
+  
+  if ( $lc_a[0] eq "bl" ) { return ""; }
   
   die "\nUnknown complex string-type: \""
     . $lc_a[0] . "\" in line " . int($make_indx + 1.2)

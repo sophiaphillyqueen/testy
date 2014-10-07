@@ -58,6 +58,7 @@ if [ $native_conf_here = $say_no ]; then
   echo
   echo "Binary build unsatisfactory. Commencing PERL version."
   sh "${origidir}/perlstrict.sh" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure-vars.seg.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/chorebox-configure.seg.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/autom.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/apnd_shrunk_argument.fn.pl" temporary--chorebox-configure
@@ -71,6 +72,8 @@ if [ $native_conf_here = $say_no ]; then
   sh "${origidir}/perldumpy.sh" "${origidir}/meaning_of.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/action__qry_var.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/lookup_option.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/action__adapt.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/devel_err.fn.pl" temporary--chorebox-configure
   
   chmod 755 temporary--chorebox-configure
   echo

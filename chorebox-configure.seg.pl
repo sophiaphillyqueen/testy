@@ -16,58 +16,6 @@
 #
 # ########################
 
-use File::Basename;
-
-
-my @dir_vars_specfied = ();
-my %dir_vars_values = {};
-my %dir_vars_real = {};
-my %valvar = {}; # Value after resolved by &autom
-my @lisdirs = (); # List of all directories resolved by &autom
-my $argum;
-
-my @make_lines;
-my $make_length;
-my $make_indx;
-my %make_label; # The directory of all goto destination-lines by label
-my %proj_info_s;
-my %proj_info_l;
-
-my @used_scrips;
-# The list of all scripts previously invoked by the current one.
-# The array begins with the most recently invoked one - that is
-# new entries are added at the *beginning* of the list.
-# The list continues to accumulate until it is deliberately cleared.
-
-my @over_scripts = ();
-# The stack of all scripts to return to upon completion of the
-# current one.
-
-my $err_mesg = "";
-
-
-my $truthiness; # Logic variable for acceptance or rejection of -certain- arguments
-
-my $adendia;
-
-my %strgvars = {}; # All the string variables in thought space
-my %strarays = {};
-my @litstack = (); # Logical string-stack (array beginning = top)
-
-
-# The following variables are used in "foreach" looping:
-my @frochstack = (); # Stack of inactive "foreaches" (needed for nesting)
-my $frochstart = 0; # Beginning line of the "foreach" reference
-my @frochlist = (); # List of yet-to-be-shifted elements
-my $frochvari = ""; # Name of variable the loop writes to:
-my $frochfont = ""; # Name of array the loop writes from (stored only for thought output)
-
-my $recipe_file; # The name of the current recipe file
-# Starts with Makefile.pre in the $(srcdir) directory.
-
-
-my $developer_mode;
-
 
 # Find out if the Makefile recipe-script is to be run
 # in developer mode (i.e. die fatal error if any feature

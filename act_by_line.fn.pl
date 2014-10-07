@@ -244,6 +244,18 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "perl-in" )
+  {
+    &action__perl_in($lc_a[2]);
+    return;
+  }
+  
+  if ( $lc_a[1] eq "adapt" )
+  {
+    &action__adapt($lc_a[2]);
+    return;
+  }
+  
   # This is the directive that invokes another script:
   if ( $lc_a[1] eq "run" )
   {
