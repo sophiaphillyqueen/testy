@@ -66,6 +66,45 @@ my $recipe_file; # The name of the current recipe file
 # Starts with Makefile.pre in the $(srcdir) directory.
 
 
+my $developer_mode;
+
+
+# Find out if the Makefile recipe-script is to be run
+# in developer mode (i.e. die fatal error if any feature
+# slated for deprecation or otherwise inappropriate is
+# used).
+{
+  my $lc_a;
+  my $lc_badval;
+  my $lc_was;
+  my $lc_specsrc;
+  
+  $lc_a = "off";
+  $lc_specsrc = "x";
+  $lc_was = &lookup_option("--devel_main","irp",$lc_a);
+  if ( $lc_was ) { $lc_specsrc = "--devel_main"; }
+  $lc_was = &lookup_option("--devel_config","irp",$lc_a);
+  if ( $lc_was ) { $lc_specsrc = "--devel_config"; }
+  
+  $developer_mode = ( 1 > 2 );
+  if ( $lc_a eq "on" ) { $developer_mode = ( 2 > 1 ); }
+  if ( $lc_a eq "irp" ) { $developer_mode = ( 2 > 1 ); }
+  $lc_badval = ( !($developer_mode) );
+  if ( $lc_a eq "off" ) { $lc_badval = ( 1 > 2 ); }
+  
+  if ( $lc_badval )
+  {
+    die "\nInvalid developer-mode status: \"" . $lc_a . "\"\n"
+      . "  specified by \"" . $lc_specsrc . "\" option.\n"
+    . "\n";
+  }
+}
+if ( $developer_mode )
+{
+  system("echo","Makefile Recipe-script interpreter running in developer mode.");
+}
+
+
 foreach $argum (@ARGV)
 {
   &try_process_argum($argum);
