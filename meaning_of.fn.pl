@@ -145,10 +145,10 @@ sub meaning_of {
     return $lc2_b;
   }
   
-  if ( $lc_a[0] eq "perl-l" ) { return &$r__perl_l_exe($lc_a[1]); }
-  if ( $lc_a[0] eq "perl-i" ) { return &$r__perl_i_exe($lc_a[1]); }
-  if ( $lc_a[0] eq "bin-l" ) { return &$r__bin_l_exe($lc_a[1]); }
-  if ( $lc_a[0] eq "bin-i" ) { return &$r__bin_i_exe($lc_a[1]); }
+  if ( $lc_a[0] eq "perl-l" ) { return &$r__perl_l_exe(&meaning_of($lc_a[1])); }
+  if ( $lc_a[0] eq "perl-i" ) { return &$r__perl_i_exe(&meaning_of($lc_a[1])); }
+  if ( $lc_a[0] eq "bin-l" ) { return &$r__bin_l_exe(&meaning_of($lc_a[1])); }
+  if ( $lc_a[0] eq "bin-i" ) { return &$r__bin_i_exe(&meaning_of($lc_a[1])); }
   
   if ( $lc_a[0] eq "bl" ) { return ""; }
   
