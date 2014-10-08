@@ -82,12 +82,29 @@ sub action__perl_in {
 sub f__perl_install__ux {
   $adendia .= "\n\tchmod 755 " . $_[0];
   $adendia .= "\n\tcp " . $_[0] . " \"" . $_[1] . "/.\"";
-  $adendia .= "\n\tchmod 755 \"" . $_[1] . "/" . $_[0] . "\"";
+  $adendia .= "\n\tchmod 755 \"" . $_[1] . "/" . &get_file_obase($_[0]) . "\"";
 }
 
 sub f__perl_install__cygwin {
   $adendia .= "\n\tcp " . $_[0] . ".pl \"" . $_[1] . "/.\"";
 }
+
+
+sub get_file_obase {
+  my $lc_arg;
+  my $lc_ret;
+  my $lc_chr;
+  $lc_arg = $_[0];
+  $lc_ret = "";
+  while ( $lc_arg ne "" )
+  {
+    $lc_chr = chop($lc_arg);
+    if ( $lc_chr eq "/" ) { return $lc_ret; }
+    $lc_ret = $lc_chr . $lc_ret;
+  }
+  return $lc_ret;
+}
+
 
 
 

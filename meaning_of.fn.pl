@@ -110,6 +110,21 @@ sub meaning_of {
     return $proj_info_l{$lc_b[0]};
   }
   
+  if ( $lc_a[0] eq "s" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    
+    ($lc2_a) = split(/:/,$lc_a[1]);
+    $lc2_b = "";
+    while ( $lc2_a > 0.5 )
+    {
+      $lc2_b .= " ";
+      $lc2_a = int($lc2_a - 0.8);
+    }
+    return $lc2_b;
+  }
+  
   if ( $lc_a[0] eq "shl" )
   {
     my $lc2_a;
