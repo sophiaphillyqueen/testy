@@ -24,14 +24,14 @@
 ::# be given the "-Wall -Werror" options so that we won't waltz
 ::# through coding mistakes.
 :setvar:compile:l:gcc
-:setvar:cdbg:lit:off
+:setvar:cdbg:l:off
 :varfromopt:cdbg:--devel_main:irp
 :varfromopt:cdbg:--devel_e:irp
 :varfromopt:cdbg:--devel_e_c:irp
 :stack:var:cdbg:
-:stack:lit:off
+:stack:l:off
 :ifsame-to:cdbg-off:
-:apnvar:compile:lit: -Wall -Werror
+:apnvar:compile:l: -Wall -Werror
 :label:cdbg-off:
 :clearstack:
 
@@ -39,9 +39,9 @@
 :setvar:build-version:info:vrsn:
 :setvar:build-moment:dqry:date +%Y-%m%d-%H%M%S
 :stack:info:rels:
-:stack:lit:yes:
+:stack:l:yes:
 :ifsame-to:version-without-moment:
-:apnvar:build-version:lit:-build-
+:apnvar:build-version:l:-build-
 :apnvar:build-version:var:build-moment:
 :goto:version-complete:
 :label:version-without-moment:
