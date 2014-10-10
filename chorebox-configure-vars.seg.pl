@@ -92,6 +92,6 @@ my $r__bin_i_exe = \&f__uninitiated;
 # separate interpretations are provided just in case.
 
 my $r__perl_install = \&f__uninitiated;
-my $r__exe_install = \&f__uninitiated;
+my $r__bin_install = \&f__uninitiated;
 
 

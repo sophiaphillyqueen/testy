@@ -33,6 +33,7 @@ sub action__adapt {
     $r__bin_l_exe = \&f__bin_l_exe__cygwin;
     $r__bin_i_exe = \&f__bin_l_exe__cygwin;
     $r__perl_install = \&f__perl_install__cygwin;
+    $r__bin_install = \&f__bin_install__cygwin;
     return;
   }
   $r__perl_l_exe = \&f__literal__unv;
@@ -40,6 +41,7 @@ sub action__adapt {
   $r__bin_l_exe = \&f__literal__unv;
   $r__bin_i_exe = \&f__literal__unv;
   $r__perl_install = \&f__perl_install__ux;
+  $r__bin_install = \&f__bin_install__ux;
 }
 
 sub f__literal__unv {
@@ -79,6 +81,17 @@ sub action__perl_in {
   &$r__perl_install(&meaning_of($lc_a[0]),&meaning_of($lc_a[1]));
 }
 
+sub action__bin_in {
+  my @lc_a;
+  
+  # First part of directive's argument is the current location
+  # of the command to be installed.
+  # The second part is the directory to install it in (as
+  # referenced from commands within the Makefile).
+  @lc_a = split(quotemeta(":" . ":"),$_[0]);
+  &$r__bin_install(&meaning_of($lc_a[0]),&meaning_of($lc_a[1]));
+}
+
 sub f__perl_install__ux {
   $adendia .= "\n\tchmod 755 " . $_[0];
   $adendia .= "\n\tcp " . $_[0] . " \"" . $_[1] . "/.\"";
@@ -87,6 +100,14 @@ sub f__perl_install__ux {
 
 sub f__perl_install__cygwin {
   $adendia .= "\n\tcp " . $_[0] . ".pl \"" . $_[1] . "/.\"";
+}
+
+sub f__bin_install__ux {
+  $adendia .= "\n\tcp " . $_[0] . " \"" . $_[1] . "/.\"";
+}
+
+sub f__bin_install__cygwin {
+  $adendia .= "\n\tcp " . $_[0] . ".exe \"" . $_[1] . "/.\"";
 }
 
 

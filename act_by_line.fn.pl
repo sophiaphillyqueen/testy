@@ -250,6 +250,12 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "bin-in" )
+  {
+    &action__bin_in($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "adapt" )
   {
     &action__adapt($lc_a[2]);
