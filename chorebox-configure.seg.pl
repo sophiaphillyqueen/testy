@@ -91,7 +91,13 @@ sub try_process_argum {
   # others to prevent them from getting mixed up with
   # the others.
   $truthiness = ( 1 > 2 );
+  
+  # The "--devel_" options are options that are there for developers.
   if (!($truthiness)) { $truthiness =  &beginningst($_[0],"--devel_"); }
+  
+  # May as well allow the "--with_" options.
+  if (!($truthiness)) { $truthiness =  &beginningst($_[0],"--with_"); }
+  
   if ( $truthiness )
   {
     system("echo","Accepting Option: " . $_[0] . ":");

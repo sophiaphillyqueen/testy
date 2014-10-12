@@ -179,7 +179,11 @@ sub act_by_line {
   # argument and who's contents are all the *remaining* arguments.
   # Do *not* include a colon at the end of the last argument, please.
   $lc_this = ( 1 > 2 );
-  if ( $lc_a[1] eq "brandnew-array" ) { $lc_this = ( 2 > 1 ); }
+  if ( $lc_a[1] eq "brandnew-array" )
+  {
+    &devel_err_aa("The \"brandnew-array\" directive has been renamed \"bna\".");
+    $lc_this = ( 2 > 1 );
+  }
   if ( $lc_a[1] eq "bna" ) { $lc_this = ( 2 > 1 ); }
   if ( $lc_this )
   {
@@ -268,6 +272,9 @@ sub act_by_line {
     my $lc2_old;
     my $lc2_new_file;
     
+    &devel_err_aa("The \"run\" strategy has been scrapped."
+      , "A better alternative will be available in compiled version."
+    );
     $lc2_new_file = &meaning_of(@lc_a[2]);
     $lc2_old = &pack_script;
     @over_scripts = (@over_scripts,$lc2_old);
