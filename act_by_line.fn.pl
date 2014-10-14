@@ -122,6 +122,12 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "prcd" )
+  {
+    &action__prcd($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "apnvar" )
   {
     my @lc2_a;

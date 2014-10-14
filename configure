@@ -74,6 +74,8 @@ if [ $native_conf_here = $say_no ]; then
   sh "${origidir}/perldumpy.sh" "${origidir}/lookup_option.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/action__adapt.fn.pl" temporary--chorebox-configure
   sh "${origidir}/perldumpy.sh" "${origidir}/devel_err.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/pack_ab.fn.pl" temporary--chorebox-configure
+  sh "${origidir}/perldumpy.sh" "${origidir}/action__prcd.fn.pl" temporary--chorebox-configure
   
   chmod 755 temporary--chorebox-configure
   echo

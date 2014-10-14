@@ -21,6 +21,12 @@
 
 use File::Basename;
 
+# Variables for world-process logic (subscript strategy AB)
+my $child_world = 0; # 0 for main recipe script -- 10 for all others
+my $parent_world = "";
+my $current_world_name = "";
+my %world_matrices = {};
+
 
 my @dir_vars_specfied = ();
 my %dir_vars_values = {};
@@ -33,6 +39,7 @@ my @make_lines;
 my $make_length;
 my $make_indx;
 my %make_label; # The directory of all goto destination-lines by label
+
 my %proj_info_s;
 my %proj_info_l;
 
