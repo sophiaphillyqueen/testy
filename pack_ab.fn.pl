@@ -123,9 +123,9 @@ sub pack_ab_restore {
   # And the variables (both strings and arrays) must be
   # passed as well - and the logic stack too.
   $lc_tmp = $lc_a->{"string-variables"};
-  %strgvars = @$lc_tmp;
+  %strgvars = %$lc_tmp;
   $lc_tmp = $lc_a->{"array-variables"};
-  %strarays = @$lc_tmp;
+  %strarays = %$lc_tmp;
   $lc_tmp = $lc_a->{"data-stack"};
   @litstack = @$lc_tmp;
   

@@ -128,6 +128,13 @@ sub act_by_line {
     return;
   }
   
+  
+  if ( $lc_a[1] eq "wrlvr" )
+  {
+    &action__wrlvr($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "apnvar" )
   {
     my @lc2_a;
@@ -278,7 +285,7 @@ sub act_by_line {
     my $lc2_old;
     my $lc2_new_file;
     
-    &devel_err_aa("The \"run\" strategy has been scrapped."
+    &devel_err_xaa("The \"run\" strategy has been scrapped."
       , "A better alternative will be available in compiled version."
     );
     $lc2_new_file = &meaning_of(@lc_a[2]);

@@ -32,3 +32,19 @@ sub devel_err_aa {
   $lc_erc .= "\n";
   die $lc_erc;
 }
+
+sub devel_err_xaa {
+  my $lc_erc;
+  my $lc_rg;
+  
+  $lc_erc = "\nFATAL ERROR: Intolerably Improper Coding:\n";
+  $lc_erc .= "Line " . int($make_indx + 1.2) . " in file \"";
+  $lc_erc .= $recipe_file . "\":\n";
+  $lc_erc .= "  " . $make_lines[$make_indx] . "\n";
+  foreach $lc_rg (@_)
+  {
+    $lc_erc .= "-" . "> " . $lc_rg . "\n";
+  }
+  $lc_erc .= "\n";
+  die $lc_erc;
+}

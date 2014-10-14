@@ -395,8 +395,16 @@ while ( $make_indx < ( $make_length - 0.5 ) )
   
   # The following litany is added to assure that
   # called scripts end by returning to the parent
-  # one, rather than ending the config.
-  if ( $make_indx > ( $make_length - 1.5 ) ) { &return_to_higher_script; }
+  # one, rather than ending the config. However,
+  # it was commented out when the threat to
+  # deprecate the "run" directive was followed
+  # through.
+  #if ( $make_indx > ( $make_length - 1.5 ) ) { &return_to_higher_script; }
+  
+  if ( $make_indx > ( $make_length - 1.5 ) )
+  {
+    &from_a__prcd;
+  }
   
   $make_indx = int($make_indx + 1.2);
 }

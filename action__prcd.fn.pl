@@ -87,3 +87,61 @@ sub action__prcd {
   }
 }
 
+sub from_a__prcd {
+  my %lc_hsh;
+  my $lc_refa;
+  my $lc_jase;
+  my $lc_aname;
+  my $lc_parent_world;
+  
+  if ( $child_world < 5 ) { return; }
+  
+  # First we get together a JSON account of the
+  # variable-space.
+  %lc_hsh = {};
+  $lc_hsh{"strings"} = \%strgvars;
+  $lc_hsh{"arrays"} = \%strarays;
+  $lc_hsh{"stack"} = \@litstack;
+  $lc_refa = \%lc_hsh;
+  $lc_jase = encode_json($lc_refa);
+  
+  # Before we leave this world, we must know
+  # it's name.
+  $lc_aname = $current_world_name;
+  
+  # Now we return to the parent world.
+  $lc_parent_world = $parent_world;
+  &pack_ab_restore($lc_parent_world);
+  
+  # And we save the world we just left to the world matrix.
+  $world_matrices{$lc_aname} = decode_json($lc_jase);
+}
+
+sub blank_world {
+  my $lc_a;
+  
+  $lc_a = decode_json("{" .
+    "\"strings\":{},\"arrays\":{},\"stack\":[]" .
+  "}");
+  
+  return $lc_a;
+}
+
+sub action__wrlvr {
+  my @lc_arg;
+  my $lc_worldnom;
+  my $lc_varnom;
+  my $lc_varcon;
+  
+  @lc_arg = split(/:/,$_[0],3);
+  $lc_worldnom = $lc_arg[0];
+  $lc_varnom = $lc_arg[1];
+  $lc_varcon = &meaning_of($lc_arg[2]);
+  if ( ref($world_matrices{$lc_worldnom}) ne "HASH" )
+  {
+    $world_matrices{$lc_worldnom} = &blank_world;
+  }
+  $world_matrices{$lc_worldnom}->{"strings"}->{$lc_varnom} = $lc_varcon;
+  
+}
+
