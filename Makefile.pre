@@ -17,6 +17,12 @@
 :#: ########################
 :#:
 :adapt:qry:uname -s
+:setvar:src:l:.
+:varfromopt:src:--srcdir:.
+
+# tempscript for config targets
+:setvar:sc-config:var:src:
+:apnvar:sc-config:l:/sc-config.pre
 
 
 ::# Here cometh the part where we define the compilation command.
@@ -235,27 +241,7 @@
 :*: generated/process_version_query.o
 
 
-:-:
-:-:Makefile: $(srcdir)/configure $(srcdir)/Makefile.pre
-:*: $(srcdir)/proj-info.txt
-:->:sh "$(srcdir)/configure"
-:foreach:configure-options:confopt:
-	:*: "
-	:echo:var:confopt:
-	:*:"
-:eachend:
-
-
-:-:
-:-:config: $(srcdir)/configure $(srcdir)/Makefile.pre
-:*: $(srcdir)/proj-info.txt
-:->:sh "$(srcdir)/configure"
-:foreach:configure-options:confopt:
-	:*: "
-	:echo:var:confopt:
-	:*:"
-:eachend:
-
+:prcd:var:sc-config::l:targetworld::x
 
 :foreach:chorebox-in-src--c:chore-c:
 	:-:

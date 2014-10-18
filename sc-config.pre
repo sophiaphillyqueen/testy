@@ -1,0 +1,24 @@
+
+:argv:configure-options:
+
+:-:
+:-:Makefile: $(srcdir)/configure $(srcdir)/Makefile.pre
+:*: $(srcdir)/proj-info.txt
+:->:sh "$(srcdir)/configure"
+:foreach:configure-options:confopt:
+	:*: "
+	:echo:var:confopt:
+	:*:"
+:eachend:
+
+
+:-:
+:-:config: $(srcdir)/configure $(srcdir)/Makefile.pre
+:*: $(srcdir)/proj-info.txt
+:->:sh "$(srcdir)/configure"
+:foreach:configure-options:confopt:
+	:*: "
+	:echo:var:confopt:
+	:*:"
+:eachend:
+

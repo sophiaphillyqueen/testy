@@ -127,6 +127,11 @@ sub blank_world {
   return $lc_a;
 }
 
+# The following function assigns a value to a specific variable of
+# a specific world based on a meaning-of expression. It is all
+# single-colon separated arguments. The first argument is the name
+# of the target world, the second argument being the variable-name.
+# The remaining arguments form the "meaning-of" expression.
 sub action__wrlvr {
   my @lc_arg;
   my $lc_worldnom;
@@ -142,6 +147,29 @@ sub action__wrlvr {
     $world_matrices{$lc_worldnom} = &blank_world;
   }
   $world_matrices{$lc_worldnom}->{"strings"}->{$lc_varnom} = $lc_varcon;
+}
+
+# This directive's first argument is the name of a subservient
+# world - and it's second argument is the name of an array
+# within that subservient world. The third argument is the name
+# of an array in the current world. The directive copies the
+# array in the current world to the array in the subservient
+# world.
+sub action__wrlry {
+  my @lc_arg;
+  my $lc_worldnom;
+  my $lc_rynom;
+  my $lc_rycon;
   
+  @lc_arg = split(/:/,$_[0]);
+  $lc_worldnom = $lc_arg[0];
+  $lc_rynom = $lc_arg[1];
+  
+  $lc_rycon = encode_json($strarays{$lc_arg[2]});
+  if ( ref($world_matrices{$lc_worldnom}) ne "HASH" )
+  {
+    $world_matrices{$lc_worldnom} = &blank_world;
+  }
+  $world_matrices{$lc_worldnom}->{"arrays"}->{$lc_rynom} = decode_json($lc_rycon);
 }
 

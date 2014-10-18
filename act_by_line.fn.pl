@@ -135,6 +135,12 @@ sub act_by_line {
     return;
   }
   
+  if ( $lc_a[1] eq "wrlry" )
+  {
+    &action__wrlry($lc_a[2]);
+    return;
+  }
+  
   if ( $lc_a[1] eq "apnvar" )
   {
     my @lc2_a;
