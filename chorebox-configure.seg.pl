@@ -225,13 +225,41 @@ sub try_process_argum {
 }
 
 
+
+# Now we also must deal with the jailing.
+&autom("jaildir","");
+sub wardenize {
+  my $lc_rg;
+  my $lc_dst;
+  my $lc_cn;
+  my $lc_dcn;
+  my $lc_jail;
+  
+  $lc_jail = $valvar{"jaildir"};
+  foreach $lc_rg (@_)
+  {
+    my $lc2_lft;
+    $lc_cn = $valvar{$lc_rg};
+    $lc_dst = "jl_" . $lc_rg;
+    $lc_dcn = $lc_cn;
+    $lc2_lft = $lc_cn;
+    while ( $lc2_lft ne "" )
+    {
+      if ( $lc2_lft eq "/" ) { $lc_dcn = $lc_jail . $lc_cn; }
+      chop($lc2_lft);
+    }
+    &autom($lc_dst,$lc_dcn);
+  }
+}
+
+
 &autom("prefix","/usr/local");
 &autom("exec_prefix",$valvar{"prefix"});
 &autom("bindir",$valvar{"exec_prefix"} . "/bin");
 &autom("sbindir",$valvar{"exec_prefix"} . "/sbin");
 &autom("libexecdir",$valvar{"exec_prefix"} . "/libexec");
 &autom("datarootdir",$valvar{"prefix"} . "/share");
-&autom("datadir",$valvar{"datadir"});
+&autom("datadir",$valvar{"datarootdir"});
 &autom("sysconfdir",$valvar{"prefix"} . "/etc");
 &autom("sharedstatedir",$valvar{"prefix"} . "/com");
 &autom("localstatedir",$valvar{"prefix"} . "/var");
@@ -271,6 +299,7 @@ sub try_process_argum {
   {
     &autom("man" . $lc_a . "dir",$valvar{"mandir"} . "/man" . $lc_a);
     &autom("man" . $lc_a . "ext","." . $lc_a);
+    &wardenize("man" . $lc_a . "dir");
     $lc_a = int($lc_a + 1.2);
   }
 }
@@ -283,6 +312,15 @@ sub try_process_argum {
 # important.
 &autom("farm_bindir",$valvar{"bindir"});
 &autom("farm_sbindir",$valvar{"sbindir"});
+
+
+&wardenize("prefix","exec_prefix","bindir","sbindir","libexecdir");
+&wardenize("datarootdir","datadir","sysconfdir","sharedstatedir");
+&wardenize("localstatedir","runstatedir","includedir","oldincludedir");
+&wardenize("super_docdir","docdir","infodir","htmldir");
+&wardenize("dvidir","pdfdir","psdir","libdir");
+&wardenize("lispdir","localedir","mandir","farm_bindir");
+&wardenize("farm_sbindir");
 
 
 
