@@ -99,7 +99,7 @@ int main ( int argc, char **argv, char **env )
       fprintf(stderr,"\n%s: FATAL ERROR:\n",argv[0]);
       fprintf(stderr,"Since none of the directories listed in PATH are within the\n");
       fprintf(stderr,"tree headed by the home-directory, it is therefore deemed\n");
-      fprintf(stderr,"that specifying the --dirname=<xxx>  option is mandatory.\n\n");
+      fprintf(stderr,"that specifying the --bindir=<xxx>  option is mandatory.\n\n");
       fflush(stderr);
       exit(4);
     }
