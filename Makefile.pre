@@ -79,12 +79,12 @@
 
 :-:
 :-:install: all install-html
-:->:cp chorebox-configure "$(farm_bindir)/."
-:->:cp chorebox-in "$(bindir)/."
-:->:mkdir -p "$(libdir)"
-:->:cp products/libchorebox.a "$(libdir)/."
-:->:mkdir -p "$(includedir)"
-:->:cp "$(srcdir)/libchorebox/inc/chorebox.h" "$(includedir)/."
+:->:cp chorebox-configure "$(jl_farm_bindir)/."
+:->:cp chorebox-in "$(jl_bindir)/."
+:->:mkdir -p "$(jl_libdir)"
+:->:cp products/libchorebox.a "$(jl_libdir)/."
+:->:mkdir -p "$(jl_includedir)"
+:->:cp "$(srcdir)/libchorebox/inc/chorebox.h" "$(jl_includedir)/."
 
 :-:
 :-:products/libchorebox.a:
@@ -107,13 +107,13 @@
 	:setvar:lc01:var:htdoc:
 	:dirname:lc01:
 	::
-	:->:mkdir -p "$(docdir)/
+	:->:mkdir -p "$(jl_docdir)/
 	:echo:var:lc01:
 	:*:"
 	::
 	:->:cp "$(srcdir)/htmldocs/
 	:echo:var:htdoc:
-	:*:" "$(docdir)/
+	:*:" "$(jl_docdir)/
 	:echo:var:lc01:
 	:*:/."
 :eachend:
@@ -128,8 +128,8 @@
 
 :-:
 :-:uninstall:
-:->:rm -rf "$(farm_bindir)/chorebox-configure"
-:->:rm -rf "$(bindir)/chorebox-in"
+:->:rm -rf "$(jl_farm_bindir)/chorebox-configure"
+:->:rm -rf "$(jl_bindir)/chorebox-in"
 
 :-:
 :-:clean:
