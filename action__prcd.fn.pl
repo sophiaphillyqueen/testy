@@ -173,3 +173,27 @@ sub action__wrlry {
   $world_matrices{$lc_worldnom}->{"arrays"}->{$lc_rynom} = decode_json($lc_rycon);
 }
 
+sub action__prvw {
+  my $lc_varbol;
+  my $lc_cryptval;
+  my $lc_clrval;
+  my $lc_parworld;
+  # This function will not work if called from the main recipe script.
+  if ( $child_world < 5 )
+  {
+    &devel_err_aa("You should not use the \"prvw\""
+      . " directive in the main recipe file.")
+    ;
+    return;
+  }
+  
+  ($lc_varbol,$lc_cryptval) = split(/:/,$_[0],2);
+  $lc_clrval = &meaning_of($lc_cryptval);
+  
+  $lc_parworld = decode_json($parent_world);
+  $lc_parworld->{"string-variables"}->{$lc_varbol} = $lc_clrval;
+  $parent_world = encode_json($lc_parworld);
+  system("echo","Parent-world thought variable set:");
+  system("echo","  " . $lc_varbol . " = \"" . $lc_clrval . "\":");
+}
+
