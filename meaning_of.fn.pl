@@ -22,7 +22,18 @@ sub meaning_of {
   
   @lc_a = split(/:/,$_[0],2);
   
-  if ( $lc_a[0] eq "l" ) { return $lc_a[1]; }
+  if ( $lc_a[0] eq "l" )
+  {
+    my $lc2_a;
+    ($lc2_a) = split(/:/,$lc_a[1]);
+    if ( $lc2_a ne $lc_a[1] )
+    {
+      &devel_err_aa("A \"l\"-type string encounters a colon."
+        , "Be aware that the behavior of such instances will soon change."
+      );
+    }
+    return $lc_a[1];
+  }
   
   if ( $lc_a[0] eq "lit" )
   {

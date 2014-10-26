@@ -45,7 +45,7 @@
 :setvar:build-version:info:vrsn:
 :setvar:build-moment:dqry:date +%Y-%m%d-%H%M%S
 :stack:info:rels:
-:stack:l:yes:
+:stack:l:yes
 :ifsame-to:version-without-moment:
 :apnvar:build-version:l:-build-
 :apnvar:build-version:var:build-moment:
