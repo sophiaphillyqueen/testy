@@ -20,9 +20,33 @@
 :setvar:src:l:.
 :varfromopt:src:--srcdir:.
 
-# tempscript for config targets
+::# Now let us identify any extra recipe-script
+::# files in this project that need to be taken
+::# into account.
+:bna:extra-recipes
+:bna:x:sc-config.pre
+:redun:x:extra-recipes:
+:bna:future-rcp
+:redun:extra-recipes:future-rcp:
+:wrlry:installworld:recipes:extra-recipes:
+:::bna:x:recipe-install.pre
+:::redun:x:extra-recipes:
+:wrlry:targetworld:recipes:extra-recipes:
+
+::# tempscript for config targets
 :setvar:sc-config:var:src:
 :apnvar:sc-config:l:/sc-config.pre
+::# tempscript for recipe-install
+:setvar:recipe-install:var:src:
+:apnvar:recipe-install:l:/recipe-install.pre
+
+
+::# So what are the parts of "chorebox-rcp-find"?
+:bna:chorebox-rcp-find-prt
+:bna:x:chorebox-rcp-find--vars.seg.pl
+:redun:x:chorebox-rcp-find-prt
+:bna:x:chorebox-rcp-find--main.seg.pl
+:redun:x:chorebox-rcp-find-prt
 
 
 ::# Here cometh the part where we define the compilation command.
@@ -73,9 +97,12 @@
 
 
 :-:
-:-:all: chorebox-configure chorebox-in products/libchorebox.a
+:-:all: chorebox-configure chorebox-in
+:*: products/libchorebox.a
+:*: products/chorebox-rcp-find
 :*: .gitignore
 :->:chmod 755 chorebox-configure
+:->:chmod 755 products/chorebox-rcp-find
 
 :-:
 :-:install: all install-html
@@ -85,6 +112,50 @@
 :->:cp products/libchorebox.a "$(jl_libdir)/."
 :->:mkdir -p "$(jl_includedir)"
 :->:cp "$(srcdir)/libchorebox/inc/chorebox.h" "$(jl_includedir)/."
+:->:cp products/chorebox-rcp-find "$(jl_farm_bindir)/."
+:->:mkdir -p "$(jl_libexecdir)/chorebox/rcp-main"
+:foreach:future-rcp:rcpno:
+  :setvar:rcpa:dvar:jl_libexecdir:
+  :apnvar:rcpa:l:/chorebox/rcp-main/
+  :apnvar:rcpa:var:rcpno:
+  :setvar:rcpb:pd:var:rcpa:
+  :->:cp "$(srcdir)/
+  :echo:var:rcpno:
+  :*:" "
+  :echo:var:rcpb:
+  :*:/."
+:eachend:
+
+:-:
+:-:products/chorebox-rcp-find:
+:*: Makefile
+:foreach:chorebox-rcp-find-prt:part:
+  :*: $(srcdir)/
+  :echo:var:part:
+:eachend:
+:->:echo "#!
+:s:1:
+:echo:var:perlloc:
+:*:" > products/tmp
+:->:echo "use strict;"
+:*: >> products/tmp
+:->:echo "my @srcpath=(
+:*:\"$(libexecdir)/chorebox/rcp-main\"
+:*:);"
+:*: >> products/tmp
+:foreach:chorebox-rcp-find-prt:part:
+  :->:echo "# line 1 \"$(srcdir)/
+  :echo:var:part:
+  :*:\"" >> products/tmp
+  :->:cat "$(srcdir)/
+  :echo:var:part:
+  :*:" >> products/tmp
+  :->:echo >> products/tmp
+:eachend:
+:->:perl -c products/tmp
+:->:chmod 755 products/tmp
+:->:mv products/tmp products/chorebox-rcp-find
+
 
 :-:
 :-:products/libchorebox.a:
@@ -130,6 +201,8 @@
 :-:uninstall:
 :->:rm -rf "$(jl_farm_bindir)/chorebox-configure"
 :->:rm -rf "$(jl_bindir)/chorebox-in"
+:->:rm -rf "$(jl_farm_bindir)/chorebox-rcp-find"
+:->:rm -rf "$(jl_libexecdir)/chorebox"
 
 :-:
 :-:clean:

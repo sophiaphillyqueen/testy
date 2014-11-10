@@ -2,7 +2,12 @@
 :argv:configure-options:
 
 :-:
-:-:Makefile: $(srcdir)/configure $(srcdir)/Makefile.pre
+:-:Makefile: $(srcdir)/configure
+:*: $(srcdir)/Makefile.pre
+:foreach:recipes:rcp:
+	:*: $(srcdir)/
+	:echo:var:rcp:
+:eachend:
 :*: $(srcdir)/proj-info.txt
 :->:sh "$(srcdir)/configure"
 :foreach:configure-options:confopt:
@@ -13,7 +18,12 @@
 
 
 :-:
-:-:config: $(srcdir)/configure $(srcdir)/Makefile.pre
+:-:config: $(srcdir)/configure
+:*: $(srcdir)/Makefile.pre
+:foreach:recipes:rcp:
+	:*: $(srcdir)/
+	:echo:var:rcp:
+:eachend:
 :*: $(srcdir)/proj-info.txt
 :->:sh "$(srcdir)/configure"
 :foreach:configure-options:confopt:

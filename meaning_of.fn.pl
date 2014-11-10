@@ -47,6 +47,17 @@ sub meaning_of {
     return $strgvars{$lc_b[0]};
   }
   
+  if ( $lc_a[0] eq "dvar" )
+  {
+    @lc_b = split(/:/,$lc_a[1]);
+    return $valvar{$lc_b[0]};
+  }
+  
+  if ( $lc_a[0] eq "pd" )
+  {
+    return dirname(&meaning_of($lc_a[1]));
+  }
+  
   if ( $lc_a[0] eq "par" )
   {
     return &meaning__of_parent($lc_a[1]);
