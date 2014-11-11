@@ -152,13 +152,35 @@ sub meaning_of {
     my $lc2_a;
     my $lc2_b;
     my $lc2_c;
+    my $lc2_d;
     
     $lc2_a = &meaning_of($lc_a[1]);
     $lc2_b = "";
     while ( $lc2_a ne "" )
     {
       $lc2_c = chop($lc2_a);
-      if ( $lc2_c eq "'" ) { $lc2_c = "'\"'\"'"; }
+      $lc2_d = $lc2_c;
+      if ( $lc2_d eq "'" ) { $lc2_c = "'\"'\"'"; }
+      $lc2_b = $lc2_c . $lc2_b;
+    }
+    return $lc2_b;
+  }
+  
+  if ( $lc_a[0] eq "msh" )
+  {
+    my $lc2_a;
+    my $lc2_b;
+    my $lc2_c;
+    my $lc2_d;
+    
+    $lc2_a = &meaning_of($lc_a[1]);
+    $lc2_b = "";
+    while ( $lc2_a ne "" )
+    {
+      $lc2_c = chop($lc2_a);
+      $lc2_d = $lc2_c;
+      if ( $lc2_d eq "'" ) { $lc2_c = "'\"'\"'"; }
+      if ( $lc2_d eq "\$" ) { $lc2_c = "\$\$"; }
       $lc2_b = $lc2_c . $lc2_b;
     }
     return $lc2_b;
