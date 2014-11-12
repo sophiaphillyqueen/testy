@@ -201,7 +201,38 @@ sub try_process_argum {
       . " by periods.)"
       . "\n\n"
     ;
-  }  
+  }
+  
+  if ( $developer_mode )
+  {
+    my $lc2_a;
+    if ( $proj_info_l{"phase"} eq "" )
+    {
+      die "\nFATAL ERROR: Missing crucial field in file:"
+        . "\n  " . $lc_infofile . ":\n"
+        . "We really need the field \"phase\""
+        . " to specify the phase of this version."
+        . "\n\n"
+      ;
+    }
+    
+    $lc2_a = ( 1 > 2 );
+    if ( $proj_info_s{"phase"} eq "a" ) { $lc2_a = ( 2 > 1 ); }
+    if ( $proj_info_s{"phase"} eq "r" ) { $lc2_a = ( 2 > 1 ); }
+    
+    if ( !($lc2_a) )
+    {
+      die "\nFATAL ERROR: Invalid project-phase specified: \"" . $proj_info_s{"phase"} . "\""
+        . "\n  Here are the valid phases:\n"
+        . "    a: Basic development phase for this version:\n"
+        . "    b: Most of the work currently is on documentation:\n"
+        . "    c: Fixing little glitches - and congealing the form:\n"
+        . "    d: Last minute prep for features and documentation before release:\n"
+        . "    r: Release version - only for final version with this particular number:\n"
+        . "\n"
+      ;
+    }
+  }
   
   if ( $proj_info_l{"year"} eq "" )
   {

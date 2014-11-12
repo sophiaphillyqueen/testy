@@ -1,5 +1,6 @@
 :name:chorebox:
 :vrsn:0.0.1:
+:phase:a:
 :rels:no:
 :year:2014:
 :holder:Sophia Elizabeth Shapira
