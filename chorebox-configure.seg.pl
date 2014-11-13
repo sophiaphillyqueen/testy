@@ -218,6 +218,9 @@ sub try_process_argum {
     
     $lc2_a = ( 1 > 2 );
     if ( $proj_info_s{"phase"} eq "a" ) { $lc2_a = ( 2 > 1 ); }
+    if ( $proj_info_s{"phase"} eq "b" ) { $lc2_a = ( 2 > 1 ); }
+    if ( $proj_info_s{"phase"} eq "c" ) { $lc2_a = ( 2 > 1 ); }
+    if ( $proj_info_s{"phase"} eq "d" ) { $lc2_a = ( 2 > 1 ); }
     if ( $proj_info_s{"phase"} eq "r" ) { $lc2_a = ( 2 > 1 ); }
     
     if ( !($lc2_a) )
