@@ -26,6 +26,8 @@
 :bna:extra-recipes
 :bna:x:sc-config.pre
 :redun:x:extra-recipes:
+:bna:x:standard-doc-install.pre:standard-doc-uninstall.pre:standard-doc-all.pre
+:redun:x:extra-recipes:
 :bna:future-rcp
 :redun:extra-recipes:future-rcp:
 :wrlry:installworld:recipes:extra-recipes:
@@ -39,6 +41,12 @@
 ::# tempscript for recipe-install
 :setvar:recipe-install:var:src:
 :apnvar:recipe-install:l:/recipe-install.pre
+
+::# Set up HTML documentation files
+:bna:html-source
+:bna:x:index.html:main.css:libchorebox/index.html
+:redun:x:html-source:
+:wrlry:targetworld:html-source:html-source:
 
 
 ::# So what are the parts of "chorebox-rcp-find"?
